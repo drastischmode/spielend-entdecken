@@ -1,0 +1,56 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:cover {"url":"https://placehold.co/1400x600/FF6B35/FFFFFF?text=Spielend+Entdecken","dimRatio":50,"minHeight":500,"align":"full","style":{"spacing":{"padding":{"top":"80px","bottom":"80px"}}}} -->
+<div class="wp-block-cover align-full" style="padding-top:80px;padding-bottom:80px;min-height:500px">
+    <span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>
+    <div class="wp-block-cover__inner-container">
+        <!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontSize":"3.5rem"}},"textColor":"base"} -->
+        <h1 class="wp-block-heading has-text-align-center has-base-color has-text-color" style="font-size:3.5rem">Entdecke die Welt des Spielens</h1>
+        <!-- /wp:heading -->
+        <!-- wp:paragraph {"align":"center","style":{"typography":{"fontSize":"1.25rem"}},"textColor":"base"} -->
+        <p class="has-text-align-center has-base-color has-text-color" style="font-size:1.25rem">Hochwertiges Spielzeug für neugierige Kinder – sicher, nachhaltig, kreativ</p>
+        <!-- /wp:paragraph -->
+        <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+        <div class="wp-block-buttons">
+            <!-- wp:button {"backgroundColor":"accent","textColor":"foreground","className":"is-style-fill"} -->
+            <div class="wp-block-button is-style-fill"><a class="wp-block-button__link has-foreground-color has-accent-background-color has-text-color has-background wp-element-button" href="/shop">Jetzt stöbern</a></div>
+            <!-- /wp:button -->
+        </div>
+        <!-- /wp:buttons -->
+    </div>
+</div>
+<!-- /wp:cover -->
+
+<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"60px","bottom":"60px"}}},"backgroundColor":"base"} -->
+<div class="wp-block-group align-full has-base-background-color has-background" style="padding-top:60px;padding-bottom:60px">
+    <!-- wp:heading {"textAlign":"center","level":2} -->
+    <h2 class="wp-block-heading has-text-align-center">Unsere Kategorien</h2>
+    <!-- /wp:heading -->
+    <!-- wp:pattern {"slug":"spielend-entdecken/category-grid"} /-->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"60px","bottom":"60px"}}}} -->
+<div class="wp-block-group align-full" style="padding-top:60px;padding-bottom:60px">
+    <!-- wp:heading {"textAlign":"center","level":2} -->
+    <h2 class="wp-block-heading has-text-align-center">Beliebte Produkte</h2>
+    <!-- /wp:heading -->
+    
+    <!-- wp:woocommerce/product-collection {"queryId":1,"query":{"perPage":4,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":false,"taxQuery":[],"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[],"filterStockStatus":true},"tagName":"div","displayLayout":{"type":"flex","columns":4}} -->
+    <div class="wp-block-woocommerce-product-collection">
+        <!-- wp:woocommerce/product-template -->
+        <!-- wp:woocommerce/product-image {"isDescendentOfQueryLoop":true} /-->
+        <!-- wp:woocommerce/product-title {"isDescendentOfQueryLoop":true} /-->
+        <!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true} /-->
+        <!-- wp:woocommerce/product-button {"isDescendentOfQueryLoop":true} /-->
+        <!-- /wp:woocommerce/product-template -->
+    </div>
+    <!-- /wp:woocommerce/product-collection -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:pattern {"slug":"spielend-entdecken/testimonials"} /-->
+
+<!-- wp:pattern {"slug":"spielend-entdecken/newsletter"} /-->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

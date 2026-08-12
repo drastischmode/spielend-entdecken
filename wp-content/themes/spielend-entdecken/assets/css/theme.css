@@ -1,0 +1,82 @@
+/* Theme Styles – Spielend Entdecken */
+
+:root {
+  --se-primary: #FF6B35;
+  --se-secondary: #2B7A62;
+  --se-accent: #F9C80E;
+  --se-bg: #FAFAF8;
+  --se-text: #2D2D2D;
+  --se-white: #FFFFFF;
+  --se-radius: 12px;
+  --se-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--se-text);
+  background: var(--se-bg);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+}
+
+a {
+  color: var(--se-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--se-secondary);
+}
+
+.wp-element-button, .button {
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+}
+.wp-element-button:hover, .button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Product Cards */
+.se-product-card, .product {
+  background: var(--se-white);
+  border-radius: var(--se-radius);
+  box-shadow: var(--se-shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.se-product-card:hover, .product:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* Breadcrumb */
+.se-breadcrumb {
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  color: #666;
+}
+.se-breadcrumb span {
+  margin: 0 4px;
+}
+
+/* WooCommerce Adjustments */
+.woocommerce .products ul, .woocommerce ul.products {
+  gap: 1.5rem;
+}
+.woocommerce ul.products li.product .price {
+  color: var(--se-primary);
+  font-weight: 600;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .wp-block-columns {
+    flex-wrap: wrap;
+  }
+}
