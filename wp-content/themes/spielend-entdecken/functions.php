@@ -59,3 +59,7 @@ if (class_exists('WooCommerce')) {
 }
 
 require_once get_template_directory() . '/patterns/register-patterns.php';
+require_once get_template_directory() . '/patterns/additional-patterns.php';
+require_once get_template_directory() . '/inc/acf-fields.php';
+require_once get_template_directory() . '/inc/schema.php';
+require_once get_template_directory() . '/inc/critical-css.php';
