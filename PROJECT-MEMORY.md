@@ -190,6 +190,14 @@ Wichtig: Template-Parts mit `<meta>`-Tags werden NICHT in den `<head>` gerendert
 - Übersetzt: Add to cart, Sortieroptionen, Mini-Cart "leer", Related products, Tabs, Checkout-Labels etc.
 - Verifiziert: Sortieroptionen komplett deutsch (Standardsortierung/Nach Beliebtheit/Preis aufsteigend…), "In den Warenkorb", kein EN-Rest, keine JS-Fehler
 
+## Git-Repo (neu eingerichtet)
+- **Standort**: `/home/ubuntu/spielend/` (git, branch `main`)
+- **Erster Commit** `5ad429f`: vollständiger Theme- (53 Dateien) + Plugin-Stand (2) + PROJECT-MEMORY.md + MIGRATION.md
+- **Struktur**: `wp-content/themes/spielend-entdecken/` (komplett vom Server gemirrort) + `wp-content/plugins/spielend-essentials/` + Docs
+- **.gitignore**: ignoriert andere Plugins (nur spielend-essentials tracked), keine WP-Core-Dateien
+- **WICHTIG**: Repo enthält nur Theme/Plugin/Docs — KEINe Uploads (Produktbilder liegen nur auf Server)
+- **Sync-Prozedur nach Änderungen**: Theme/Plugin-Dateien ändern → per FTP deployen → `lftp mirror` vom Server zurück nach `/home/ubuntu/spielend/wp-content/...` → `git add -A && git commit` (siehe unten)
+
 ## Lokale Dateien
 - `/tmp/opencode/` — Theme-Kopien (header/footer/home.html, functions.php), Import-Skripte, Logo.png
 - Alte Seite scraped: `https://www.spielend-entdecken.de` (Produkte/Kategorien/Impressum/Datenschutz-Quelle)
