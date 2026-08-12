@@ -178,11 +178,12 @@
 
             try {
                 const formData = new FormData();
-                formData.append('action', 'woocommerce_ajax_add_to_cart');
                 formData.append('product_id', productId);
                 formData.append('quantity', 1);
 
-                const res = await fetch(SE.ajaxurl, { method: 'POST', body: formData });
+                // Korrekter WooCommerce wc-ajax Endpoint (admin-ajax.php + 
+                // 'woocommerce_ajax_add_to_cart' existiert NICHT und liefert 400)
+                const res = await fetch('/?wc-ajax=add_to_cart', { method: 'POST', body: formData });
                 const data = await res.json();
 
                 if (data.success) {
@@ -277,14 +278,13 @@
                 form.addEventListener('submit', async e => {
                     e.preventDefault();
                     const formData = new FormData(form);
-                    formData.append('action', 'woocommerce_ajax_add_to_cart');
                     const btn = form.querySelector('button[type="submit"]');
                     const originalText = btn.textContent;
                     btn.disabled = true;
                     btn.textContent = 'Wird hinzugefügt...';
 
                     try {
-                        const res = await fetch(SE.ajaxurl, { method: 'POST', body: formData });
+                        const res = await fetch('/?wc-ajax=add_to_cart', { method: 'POST', body: formData });
                         const data = await res.json();
                         if (data.success) {
                             showNotification('In den Warenkorb gelegt', 'success');
@@ -525,25 +525,37 @@
     }
 
     // ============================================
-    // WISHLIST
+    // WISHLIST (Cookie-basiert, deckt AJAX-System ab)
+    // Das Plugin nutzt .spielend-wishlist-btn + Cookie 'spielend_wishlist'.
+    // main.js ergänzt diesen Handler für Produktkarten/Quick-View.
     // ============================================
     function initWishlist() {
-        document.addEventListener('click', async e => {
-            const btn = e.target.closest('.se-wishlist-toggle');
+        function getWishlist() {
+            const m = document.cookie.match(/(?:^|; )spielend_wishlist=([^;]*)/);
+            return m ? m[1].split(',').filter(Boolean) : [];
+        }
+        function setWishlist(ids) {
+            document.cookie = 'spielend_wishlist=' + ids.join(',') + '; path=/; max-age=31536000';
+        }
+
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.se-wishlist-toggle, .spielend-wishlist-btn');
             if (!btn) return;
-
             e.preventDefault();
-            const productId = btn.dataset.productId;
-            const isActive = btn.classList.toggle('active');
+            const productId = btn.dataset.productId || btn.dataset.id;
+            if (!productId) return;
 
-            try {
-                await fetchAPI('se_wishlist_toggle', { product_id: productId, add: isActive });
-                btn.setAttribute('aria-label', isActive ? 'Von Wunschliste entfernen' : 'Zur Wunschliste hinzufügen');
-                showNotification(isActive ? 'Zur Wunschliste hinzugefügt' : 'Von Wunschliste entfernt', 'success');
-            } catch (err) {
-                btn.classList.toggle('active');
-                showNotification('Fehler: ' + err.message, 'error');
-            }
+            let ids = getWishlist();
+            const isActive = ids.indexOf(productId) === -1;
+            if (isActive) { ids.push(productId); } else { ids = ids.filter(x => x !== productId); }
+            setWishlist(ids);
+
+            btn.classList.toggle('active', isActive);
+            btn.classList.toggle('is-active', isActive);
+            const label = btn.querySelector('.spielend-wishlist-btn__label');
+            if (label) label.textContent = isActive ? 'Auf der Wunschliste' : 'Wunschliste';
+            btn.setAttribute('aria-label', isActive ? 'Von Wunschliste entfernen' : 'Zur Wunschliste hinzufügen');
+            showNotification(isActive ? 'Zur Wunschliste hinzugefügt ♥' : 'Von Wunschliste entfernt', 'success');
         });
     }
 
