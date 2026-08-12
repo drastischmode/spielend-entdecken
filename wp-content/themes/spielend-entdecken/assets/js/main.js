@@ -405,9 +405,24 @@
 
     // ============================================
     // INTERSECTION OBSERVER ANIMATIONS
+    // Zuständig nur für Elemente OHNE `.se-reveal`-Klasse (die behandelt
+    // animations.css vollständig). Verhindert doppelte/FOUC-Trigger und
+    // unsichtbare Sections durch robuste Fallbacks.
     // ============================================
     function initScrollAnimations() {
-        if (!('IntersectionObserver' in window)) return;
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // Nur Karten/Blocks animieren, die NICHT bereits .se-reveal nutzen
+        const targets = $$('.se-card:not(.se-reveal), .se-product-card:not(.se-reveal)');
+        if (!targets.length) return;
+
+        const style = document.createElement('style');
+        style.textContent = '.se-visible{opacity:1!important;transform:none!important;transition:none!important}';
+        document.head.appendChild(style);
+
+        if (!('IntersectionObserver' in window) || reduced) {
+            targets.forEach(el => el.classList.add('se-visible'));
+            return;
+        }
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -416,19 +431,17 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
 
-        $$('.se-card, .se-product-card, .wp-block-group, .wp-block-columns, .wp-block-cover').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        targets.forEach(el => {
+            el.classList.add('se-reveal-js');
             observer.observe(el);
         });
 
-        // Add visible class style
-        const style = document.createElement('style');
-        style.textContent = '.se-visible { opacity: 1 !important; transform: translateY(0) !important; }';
-        document.head.appendChild(style);
+        // Sicherheitsnetz
+        setTimeout(() => {
+            targets.forEach(el => el.classList.add('se-visible'));
+        }, 2500);
     }
 
     // ============================================
@@ -467,38 +480,10 @@
 
     // ============================================
     // COOKIE CONSENT
+    // Ausgelagert in assets/cookie-banner.js (einzige Quelle).
+    // Diese Funktion ist bewusst leer – das eigenständige
+    // cookie-banner.js verhindert Doppel-Banner.
     // ============================================
-    function initCookieConsent() {
-        if (localStorage.getItem('se_cookie_consent')) return;
-
-        const banner = document.createElement('div');
-        banner.className = 'se-cookie-banner';
-        banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#2D2D2D;color:#fff;padding:16px 20px;box-shadow:0 -4px 24px rgba(0,0,0,.2);z-index:2000;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding-bottom:max(16px,env(safe-area-inset-bottom))';
-        banner.innerHTML = `
-            <p style="margin:0;font-size:.9rem;max-width:600px">Wir nutzen Cookies für Analyse & Marketing. <a href="/datenschutz" style="color:#F9C80E">Details</a></p>
-            <div style="display:flex;gap:8px">
-                <button class="se-cookie-accept" style="padding:10px 20px;border-radius:50px;background:#FF6B35;color:#fff;border:none;font-weight:600">Alle akzeptieren</button>
-                <button class="se-cookie-necessary" style="padding:10px 20px;border-radius:50px;background:transparent;color:#fff;border:2px solid #fff;font-weight:600">Nur notwendig</button>
-            </div>
-        `;
-        document.body.appendChild(banner);
-
-        banner.querySelector('.se-cookie-accept').addEventListener('click', () => {
-            localStorage.setItem('se_cookie_consent', 'all');
-            banner.remove();
-            loadAnalytics();
-        });
-        banner.querySelector('.se-cookie-necessary').addEventListener('click', () => {
-            localStorage.setItem('se_cookie_consent', 'necessary');
-            banner.remove();
-        });
-
-        function loadAnalytics() {
-            if (window.se_gtm_id) {
-                // GTM or GA loading logic here
-            }
-        }
-    }
 
     // ============================================
     // NOTIFICATIONS
@@ -508,7 +493,7 @@
         const notification = document.createElement('div');
         notification.className = `se-notification se-notification-${type}`;
         notification.style.cssText = `
-            background: ${type === 'success' ? '#2B7A62' : type === 'error' ? '#dc3545' : '#FF6B35'};
+            background: ${type === 'success' ? '#2B7A62' : type === 'error' ? '#DC2626' : '#CC4D00'};
             color: white;
             padding: 14px 20px;
             border-radius: 12px;
@@ -582,7 +567,6 @@
         initSmoothScroll();
         initScrollAnimations();
         initFormValidation();
-        initCookieConsent();
         initWishlist();
 
         // Initial mini cart load

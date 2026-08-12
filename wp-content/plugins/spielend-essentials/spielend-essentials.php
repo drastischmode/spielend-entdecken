@@ -493,7 +493,8 @@ final class Spielend_Essentials {
 			$image  = '';
 
 			if ( $thumb ) {
-				$image = wp_get_attachment_image( $thumb, 'medium', false, array( 'loading' => 'lazy' ) );
+				$alt   = $term->name . ' – Spielzeug entdecken';
+				$image = wp_get_attachment_image( $thumb, 'medium', false, array( 'loading' => 'lazy', 'alt' => $alt ) );
 			}
 
 			if ( '' === $image ) {
@@ -557,7 +558,7 @@ final class Spielend_Essentials {
 			if ( ! $product ) {
 				continue;
 			}
-			$img = $product->get_image( 'woocommerce_thumbnail', array( 'loading' => 'lazy' ) );
+			$img = $product->get_image( 'woocommerce_thumbnail', array( 'loading' => 'lazy', 'alt' => $product->get_name() ) );
 			if ( '' === $img ) {
 				$img = '<span class="spielend-product-ph" aria-hidden="true"></span>';
 			}
@@ -581,13 +582,39 @@ final class Spielend_Essentials {
 
 	/**
 	 * Bereinigt den Shortcode-Output: entfernt vom Block-Renderer eingefügte
-	 * leere <p></p>-Fragmente, die in <a>-Tags landen und Whitespace/Klickfehler verursachen.
+	 * <p>…</p>- und <br>-Fragmente, die in <a>-Tags landen und das Grid-Markup
+	 * zerteilen (Bild- und Titel-Link werden sonst zwei separate <a>-Elemente).
 	 */
 	public function clean_category_grid_output( string $output ): string {
 		if ( has_shortcode( $output, 'spielend_category_grid' ) || false !== strpos( $output, 'spielend-category-grid' ) ) {
-			$output = preg_replace( '#<p>\s*</p>#', '', $output );
-			$output = preg_replace( '#</p>\s*(?=<figure)#', '', $output );
-			$output = preg_replace( '#</p>\s*(?=</?a)#', '', $output );
+			// 1) Von wpautop/Block-Renderer eingefügte <p>/</p>/<br> entfernen.
+			$output = preg_replace( '#<(/?p|br)\b[^>]*>#i', '', $output );
+
+			// 2) wpautop zerteilt <figure> (Block-Element) aus dem <a> heraus,
+			//    wodurch Bild-Karte und Titel-Karte zwei separate <a> werden.
+			//    → Benachbarte gleich-Href-Karten wieder zu einer zusammenführen.
+			if ( preg_match_all( '#<a\s+class="spielend-category-grid__card"[^>]*href="([^"]+)"[^>]*>(.*?)</a>#is', $output, $m, PREG_SET_ORDER ) ) {
+				$merged = array();
+				$order  = array();
+				foreach ( $m as $seg ) {
+					$href = $seg[1];
+					if ( ! isset( $merged[ $href ] ) ) {
+						$merged[ $href ] = $seg[2];
+						$order[]         = $href;
+					} else {
+						$merged[ $href ] .= $seg[2];
+					}
+				}
+				$cards = array();
+				foreach ( $order as $href ) {
+					$cards[] = '<a class="spielend-category-grid__card" href="' . esc_url( $href ) . '">' . $merged[ $href ] . '</a>';
+				}
+				if ( $cards ) {
+					$output = '<div class="spielend-category-grid">' . implode( "\n", $cards ) . '</div>';
+				}
+			}
+
+			$output = preg_replace( '#\s{2,}#', ' ', $output );
 			$output = trim( $output );
 		}
 		return $output;
@@ -731,6 +758,14 @@ JS;
 .spielend-category-grid__title{font-weight:700;text-align:center;line-height:1.2}
 .spielend-category-grid__count{font-size:.85rem;color:var(--wp--preset--color--secondary,#2b7a62)}
 .spielend-contact-form__submit{cursor:pointer;padding:.6rem 1.25rem;border:0;border-radius:.375rem;background:var(--wp--preset--color--primary,#1e293b);color:#fff;font-weight:600}
+.se-featured-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.25rem;max-width:1200px;margin:0 auto}
+.se-prod-card{display:flex;flex-direction:column;gap:.6rem;padding:1rem;border-radius:20px;background:var(--wp--preset--color--surface,#fff);box-shadow:0 1px 3px rgba(41,37,36,.1);border:1px solid rgba(120,113,108,.12);text-decoration:none;color:var(--wp--preset--color--foreground,#292524);transition:transform .25s ease,box-shadow .25s ease}
+.se-prod-card:hover,.se-prod-card:focus-visible{transform:translateY(-4px);box-shadow:0 12px 28px rgba(204,77,0,.14);outline:3px solid var(--wp--preset--color--primary,#cc4d00);outline-offset:2px}
+.se-prod-card__img{width:100%;aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--wp--preset--color--background,#faf9f6)}
+.se-prod-card__img img{width:100%;height:100%;object-fit:cover;display:block}
+.se-prod-card__title{font-weight:600;font-size:.95rem;line-height:1.3;text-align:center}
+.se-prod-card__price{font-weight:700;color:var(--wp--preset--color--primary,#cc4d00);text-align:center}
+.se-prod-card__btn{display:inline-flex;align-items:center;justify-content:center;margin:0 auto;padding:.5rem 1rem;border-radius:9999px;background:var(--wp--preset--color--primary,#cc4d00);color:#fff;font-size:.85rem;font-weight:600;text-align:center}
 CSS;
 	}
 }

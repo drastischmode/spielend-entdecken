@@ -13,6 +13,13 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     revealEls.forEach(function(el) { observer.observe(el); });
+
+    // Sicherheitsnetz: Nach 3s alles sichtbar machen, falls der Observer
+    // auf off-canvas/animierten Seiten nicht auslöst (verhindert dauerhaft
+    // unsichtbare Sections).
+    setTimeout(function() {
+      revealEls.forEach(function(el) { el.classList.add('is-visible'); });
+    }, 3000);
   } else {
     revealEls.forEach(function(el) { el.classList.add('is-visible'); });
   }

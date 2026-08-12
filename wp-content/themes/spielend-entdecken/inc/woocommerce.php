@@ -167,6 +167,27 @@ function se_loop_product_trust_badges() {
 }
 add_action('woocommerce_after_shop_loop_item_title', 'se_loop_product_trust_badges', 4);
 
+/**
+ * Trust-Badges in Block-basierten Produkt-Loops (Query Loop / FSE-Shop)
+ * Fügt nach dem Produkt-Titel die Badges ein, da klassische Hooks dort
+ * nicht feuern.
+ */
+function se_block_loop_trust_badges($block_content, $block) {
+    if (empty($block['blockName']) || 'woocommerce/product-title' !== $block['blockName']) {
+        return $block_content;
+    }
+    // Nur im Shop/Kategorie-Kontext rendern
+    if (!is_shop() && !is_product_category() && !is_product_tag() && !wp_doing_ajax()) {
+        return $block_content;
+    }
+    $post_id = get_the_ID();
+    if (!$post_id) return $block_content;
+    $badges = se_product_trust_badges($post_id, true);
+    if (!$badges) return $block_content;
+    return $block_content . $badges;
+}
+add_filter('render_block', 'se_block_loop_trust_badges', 10, 2);
+
 /** Trust-Elemente auf der Produktseite: Versand + Altersempfehlung + Tradition */
 function se_single_product_trust() {
     global $product;

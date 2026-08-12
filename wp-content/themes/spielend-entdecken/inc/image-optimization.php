@@ -41,17 +41,17 @@ add_action('wp_head', function() {
     // Nur auf Frontend
     if (is_admin()) return;
     
-    // Critical CSS inline (sehr kompakt)
+    // Critical CSS inline (sehr kompakt, konsistent mit theme.css WCAG-Palette)
     $critical_css = '
     :root {
-      --color-primary: #FF6B35;
+      --color-primary: #CC4D00;
       --color-text: #292524;
       --color-bg-base: #faf9f6;
       --space-lg: 1.5rem;
     }
-    body { margin: 0; padding: 0; background: var(--color-bg-base); color: var(--color-text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { margin: 0; padding: 0; background: var(--color-bg-base); color: var(--color-text); font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     .se-header { position: fixed; top: 0; left: 0; right: 0; z-index: 300; background: #fff; border-bottom: 1px solid #e7e5e4; }
-    .se-hero { background: linear-gradient(135deg, #FF6B35 0%, #E85D04 100%); color: white; padding: var(--space-lg); min-height: 300px; display: flex; align-items: center; }
+    .se-hero { background: linear-gradient(135deg, #CC4D00 0%, #E85D04 100%); color: white; padding: var(--space-lg); min-height: 300px; display: flex; align-items: center; }
     .se-hero h1 { margin: 0; font-size: 2rem; font-weight: 700; line-height: 1.2; }
     h1, h2, h3 { margin-top: 0; }
     .button, button { background: var(--color-primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 150ms; }
@@ -60,25 +60,28 @@ add_action('wp_head', function() {
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
     ';
     
-    echo '<style>' . trim($critical_css) . '</style>' . "\n";
+    echo '<style id="se-critical-css">' . trim($critical_css) . '</style>' . "\n";
 }, 1);
 
 /**
- * Preload wichtige Ressourcen
+ * Preload wichtige Ressourcen (echte, existierende Dateien)
  */
 add_action('wp_head', function() {
-    // Preload Primary Font
-    echo '<link rel="preload" as="style" href="' . esc_url(get_template_directory_uri()) . '/assets/fonts/inter.css">' . "\n";
-    
-    // Preload Hero Image
-    if (is_front_page()) {
-        echo '<link rel="preload" as="image" href="' . esc_url(get_template_directory_uri()) . '/assets/images/hero-bg.jpg" imagesrcset="' . esc_url(get_template_directory_uri()) . '/assets/images/hero-bg-small.jpg 480w, ' . esc_url(get_template_directory_uri()) . '/assets/images/hero-bg.jpg 1200w">' . "\n";
-    }
-    
-    // Preconnect zu CDN (falls verwendet)
-    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
-    echo '<link rel="dns-prefetch" href="https://cdn.example.com">' . "\n";
+    $uri = get_template_directory_uri();
+    echo '<link rel="preload" as="font" type="font/woff2" crossorigin href="' . esc_url($uri) . '/assets/fonts/inter/Inter-VariableFont_slnt,wght.woff2">' . "\n";
+    echo '<link rel="preload" as="font" type="font/woff2" crossorigin href="' . esc_url($uri) . '/assets/fonts/fredoka/Fredoka-VariableFont_wght.woff2">' . "\n";
 }, 2);
+
+/**
+ * Dequeue Block-Library-Styles außerhalb des Editors (Performance)
+ * (aus critical-css.php übernommen, um Duplikate zu vermeiden)
+ */
+function se_dequeue_block_library_css() {
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
+    wp_dequeue_style('wc-blocks-style');
+}
+add_action('wp_enqueue_scripts', 'se_dequeue_block_library_css', 100);
 
 /**
  * Deferred JavaScript Loading
@@ -122,5 +125,11 @@ add_action('wp_enqueue_scripts', function() {
         wp_dequeue_style('woocommerce-general');
         wp_dequeue_style('woocommerce-smallscreen');
         wp_dequeue_style('woocommerce-layout');
+    }
+
+    // Tracking-/Attributions-Scripts nur im Checkout laden (Performance)
+    if (!is_checkout()) {
+        wp_dequeue_script('wc-order-attribution');
+        wp_dequeue_script('sourcebuster-js');
     }
 }, 11);

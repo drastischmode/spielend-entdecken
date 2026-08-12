@@ -38,6 +38,7 @@
   --color-warning: #F59E0B;
   --color-warning-light: #FEF3C7;
   --color-error: #EF4444;
+  --color-error-dark: #DC2626;
   --color-error-light: #FEE2E2;
 
   /* Spacing */
@@ -58,7 +59,7 @@
   --shadow-sm: 0 1px 3px rgba(41, 37, 36, 0.08);
   --shadow-md: 0 4px 12px rgba(41, 37, 36, 0.12);
   --shadow-lg: 0 8px 28px rgba(41, 37, 36, 0.16);
-  --shadow-hover: 0 12px 36px rgba(255, 107, 53, 0.18);
+  --shadow-hover: 0 12px 36px rgba(204, 77, 0, 0.18);
 
   /* Typography */
   --font-serif: 'Georgia', serif;
@@ -111,6 +112,13 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+/* Kein horizontaler Scroll durch off-canvas-Elemente
+   (WooCommerce Mini-Cart Drawer, My-Account Button) */
+body {
+  overflow-x: clip;
 }
 
 body {
@@ -259,7 +267,7 @@ button,
 
 .button-outline:hover,
 .btn-outline:hover {
-  background-color: rgba(255, 107, 53, 0.08);
+  background-color: rgba(204, 77, 0, 0.08);
   border-color: var(--color-primary-dark);
   color: var(--color-primary-dark);
 }
@@ -639,13 +647,115 @@ button,
 .wp-block-navigation a:hover,
 .wp-block-navigation-item a:hover {
   color: var(--color-primary);
-  background-color: rgba(255, 107, 53, 0.08);
+  background-color: rgba(204, 77, 0, 0.08);
 }
 
 .wp-block-navigation a:focus-visible,
 .wp-block-navigation-item a:focus-visible {
   outline: 3px solid var(--color-primary);
   outline-offset: -3px;
+}
+
+/* My-Account-Button im Header nie überlaufen lassen */
+.se-header .wp-block-woocommerce-customer-account a,
+.se-header .wc-block-components-button {
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* ============================================
+   HEADER RESPONSIVE (Mobile-First)
+   Header bleibt kompakt: Logo | Suche | MiniCart in einer Reihe.
+   ============================================ */
+@media (max-width: 768px) {
+  /* Columns nicht stapeln, sondern in einer Zeile behalten */
+  .se-header .wp-block-columns,
+  .se-header > .wp-block-columns,
+  .se-header .wp-block-group .wp-block-columns {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: var(--space-sm);
+    align-items: center;
+  }
+
+  .se-header .wp-block-column {
+    padding: 0 !important;
+    flex: 0 1 auto !important;
+  }
+
+  /* Logo-Spalte */
+  .se-header .wp-block-column:first-child {
+    flex: 0 0 auto !important;
+    min-width: 0;
+    width: auto !important;
+  }
+  .se-header .wp-block-column:first-child .wp-block-site-logo,
+  .se-header .wp-block-column:first-child img {
+    max-width: 90px;
+    height: auto;
+  }
+
+  /* Mittlere Spalte (Navigation) – Platz sparen, Menü-Button kompakt */
+  .se-header .wp-block-column:nth-child(2) {
+    flex: 0 0 auto !important;
+    min-width: 0;
+    width: auto !important;
+  }
+  .se-header .wp-block-navigation {
+    justify-content: flex-start;
+  }
+
+  /* Rechte Spalte (Suche + MiniCart) */
+  .se-header .wp-block-column:nth-child(3),
+  .se-header .wp-block-column:last-child {
+    flex: 1 1 auto !important;
+    min-width: 0;
+    width: auto !important;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .se-header .wp-block-column:nth-child(3) > *,
+  .se-header .wp-block-column:last-child > * {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .se-header .se-search-form {
+    max-width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .se-search-form-wrap {
+    padding-left: 10px;
+  }
+
+  .se-search-input {
+    font-size: 0.85rem;
+    padding: 8px 6px;
+  }
+
+  .se-search-btn {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+  }
+
+  /* MiniCart-Button kompakter */
+  .se-header .wc-block-mini-cart__button {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+
+  /* Account-Button schrumpfen */
+  .se-header .wp-block-woocommerce-customer-account a {
+    font-size: 0;
+    padding: 6px;
+  }
+  .se-header .wp-block-woocommerce-customer-account a::before {
+    font-size: 0.85rem;
+  }
 }
 
 /* ============================================
@@ -766,7 +876,7 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  box-shadow: 0 0 0 3px rgba(204, 77, 0, 0.1);
 }
 
 label {
@@ -1128,7 +1238,7 @@ footer p {
 }
 
 .spielend-wishlist-btn.is-active {
-  background-color: rgba(255, 107, 53, 0.08);
+  background-color: rgba(204, 77, 0, 0.08);
   border-color: var(--color-primary);
   color: var(--color-primary);
 }

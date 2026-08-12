@@ -96,7 +96,7 @@ function se_render_options_page() {
     ?>
 <div class="wrap se-admin-wrap">
     <h1 style="display:flex;align-items:center;gap:10px;">
-        <span class="dashicons dashicons-toys" style="font-size:28px;width:28px;height:28px;color:#FF6B35;"></span>
+        <span class="dashicons dashicons-toys" style="font-size:28px;width:28px;height:28px;color:#CC4D00;"></span>
         Spielend Entdecken – Theme Optionen
     </h1>
 

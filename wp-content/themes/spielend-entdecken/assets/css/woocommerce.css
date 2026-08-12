@@ -2,6 +2,17 @@
    WooCommerce Overrides (nutzt theme.css Variablen)
    ============================================ */
 
+/* Mini-Cart Drawer – geschlossen vollständig vom Layout entkoppeln */
+.wc-block-components-drawer:not([aria-hidden="true"]) .wc-block-components-drawer__screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal, 400);
+}
+
+html.wc-block-components-drawer__html--is-open body {
+  overflow: hidden;
+}
+
 /* Mini-Cart Drawer */
 .woocommerce-mini-cart {
   background-color: var(--color-surface);
@@ -33,7 +44,7 @@
 }
 
 .mini_cart_item a.remove:hover {
-  color: var(--color-error-dark, #DC2626);
+  color: var(--color-error-dark);
 }
 
 .cart_list.product_list_widget li a {
@@ -173,7 +184,7 @@
 .woocommerce .quantity .qty:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  box-shadow: 0 0 0 3px rgba(204, 77, 0, 0.1);
 }
 
 /* Search Box */
@@ -198,7 +209,7 @@
 .woocommerce .orderby:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  box-shadow: 0 0 0 3px rgba(204, 77, 0, 0.1);
 }
 
 /* Filter Pills */
@@ -275,6 +286,83 @@
   padding: var(--space-lg);
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border-light);
+}
+
+/* ============================================
+   BLOCK-TEMPLATE SHOP (Query Loop)
+   Karten im FSE-Shop nutzen wc-block-Klassen statt
+   klassischer .woocommerce ul.products Selektoren.
+   ============================================ */
+
+.wc-block-grid__product,
+.wc-block-product-template .wc-block-product {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.wc-block-grid__product:hover,
+.wc-block-product-template .wc-block-product:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.wc-block-grid__product-image img,
+.wc-block-product__image img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  width: 100%;
+}
+
+.wc-block-grid__product-title,
+.wc-block-product__title {
+  font-weight: var(--font-weight-semibold);
+  font-size: 1rem;
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  margin: var(--space-sm) 0;
+  text-align: center;
+}
+
+.wc-block-grid__product-price,
+.wc-block-product__price {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: var(--space-sm);
+}
+
+.wc-block-grid__product .wp-block-button__link,
+.wc-block-product .wp-block-button__link {
+  width: 100%;
+  text-align: center;
+}
+
+/* Trust-Badges in Block-Karten (per render_block eingefügt) */
+.wc-block-grid__product .se-trust-badges,
+.wc-block-product .se-trust-badges {
+  justify-content: center;
+  padding: 0 var(--space-sm);
+  margin: 0 0 var(--space-sm);
+}
+
+/* Mini-Cart & WooCommerce Blocks Farben */
+.wc-block-components-product-name,
+.wc-block-mini-cart__button {
+  color: var(--color-text);
+}
+
+.wc-block-components-product-price__value {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
 }
 
 /* Responsive */

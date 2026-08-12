@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-define('SE_THEME_VERSION', '2.0.0');
+define('SE_THEME_VERSION', '2.1.0');
 
 function se_setup() {
     add_theme_support('block-template-parts');
@@ -27,7 +27,8 @@ add_action('after_setup_theme', 'se_setup');
 
 function se_enqueue_assets() {
     $template_uri = get_template_directory_uri();
-    wp_enqueue_style('se-theme', $template_uri . '/assets/css/theme.css', [], SE_THEME_VERSION);
+    wp_enqueue_style('se-fonts', $template_uri . '/assets/css/fonts.css', [], SE_THEME_VERSION);
+    wp_enqueue_style('se-theme', $template_uri . '/assets/css/theme.css', ['se-fonts'], SE_THEME_VERSION);
     wp_enqueue_style('se-cookie-banner', $template_uri . '/assets/cookie-banner.css', [], SE_THEME_VERSION);
     wp_enqueue_script('se-cookie-banner', $template_uri . '/assets/cookie-banner.js', [], SE_THEME_VERSION, true);
     wp_enqueue_style('se-whatsapp', $template_uri . '/assets/css/whatsapp.css', [], SE_THEME_VERSION);
@@ -72,7 +73,7 @@ function se_render_dashboard_widget() {
 <div style="padding:6px 2px;">
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
         <div style="flex:1;min-width:130px;background:#FFF8F0;border:1px solid #FFE0C2;border-radius:10px;padding:12px;text-align:center;">
-            <div style="font-size:26px;font-weight:700;color:#FF6B35;"><?php echo esc_html($orders_open); ?></div>
+            <div style="font-size:26px;font-weight:700;color:#CC4D00;"><?php echo esc_html($orders_open); ?></div>
             <div style="font-size:12px;color:#666;">Offene Bestellungen</div>
         </div>
         <div style="flex:1;min-width:130px;background:#F0FAF6;border:1px solid #C8E8DC;border-radius:10px;padding:12px;text-align:center;">
@@ -254,7 +255,6 @@ require_once get_template_directory() . '/patterns/register-patterns.php';
 require_once get_template_directory() . '/patterns/additional-patterns.php';
 require_once get_template_directory() . '/inc/acf-fields.php';
 require_once get_template_directory() . '/inc/schema.php';
-require_once get_template_directory() . '/inc/critical-css.php';
 require_once get_template_directory() . '/inc/bulk-meta-tool.php';
 require_once get_template_directory() . '/inc/api-bulk-meta.php';
 require_once get_template_directory() . '/inc/init-bulk-meta.php';

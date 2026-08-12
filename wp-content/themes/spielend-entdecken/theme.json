@@ -9,17 +9,17 @@
     },
     "color": {
       "palette": [
-        { "slug": "primary", "color": "#FF6B35", "name": "Warm Orange" },
+        { "slug": "primary", "color": "#CC4D00", "name": "Warm Orange" },
         { "slug": "secondary", "color": "#2B7A62", "name": "Sage Green" },
         { "slug": "accent", "color": "#F9C80E", "name": "Soft Yellow" },
-        { "slug": "background", "color": "#FDF2E9", "name": "Warm Cream" },
-        { "slug": "base", "color": "#FFFAF5", "name": "Warm White" },
-        { "slug": "foreground", "color": "#44403C", "name": "Warm Stone" },
+        { "slug": "background", "color": "#fffbeb", "name": "Warm Cream" },
+        { "slug": "base", "color": "#faf9f6", "name": "Warm White" },
+        { "slug": "foreground", "color": "#292524", "name": "Warm Stone" },
         { "slug": "surface", "color": "#FFFFFF", "name": "Card White" }
       ],
       "link": true,
       "gradients": [
-        { "slug": "spielend-hero", "gradient": "linear-gradient(135deg, #2B7A62 0%, #FF6B35 100%)", "name": "Spielend Hero" }
+        { "slug": "spielend-hero", "gradient": "linear-gradient(135deg, #CC4D00 0%, #E85D04 100%)", "name": "Spielend Hero" }
       ]
     },
     "typography": {

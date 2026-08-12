@@ -61,7 +61,7 @@
 }
 .se-product-card:hover, .woocommerce ul.products li.product:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(255,107,53,.16);
+  box-shadow: 0 20px 40px rgba(204,77,0,.16);
 }
 
 /* Sale-Badge */
@@ -69,13 +69,13 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  background: linear-gradient(135deg, #FF6B35, #E85D04);
+  background: linear-gradient(135deg, #CC4D00, #E85D04);
   color: #fff;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: .8rem;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(255,107,53,.3);
+  box-shadow: 0 4px 12px rgba(204,77,0,.3);
   z-index: 2;
   min-height: 0;
   line-height: 1;
