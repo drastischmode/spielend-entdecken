@@ -132,4 +132,20 @@ add_action('wp_enqueue_scripts', function() {
         wp_dequeue_script('wc-order-attribution');
         wp_dequeue_script('sourcebuster-js');
     }
-}, 11);
+
+    // Unnötige WooCommerce-Block-Dependencies auf Nicht-Shop-Seiten entfernen.
+    // Der Mini-Cart im Header braucht nur mini-cart-frontend + wc-blocks.
+    // Diese Scripts werden sonst global geladen, sind aber nur für den
+    // Block-Editor/Checkout relevant.
+    $wc_block_deps = array(
+        'wc-settings',
+        'wc-types',
+        'wc-price-format',
+        'wc-blocks-middleware',
+    );
+    if (!is_woocommerce() && !is_cart() && !is_checkout()) {
+        foreach ($wc_block_deps as $handle) {
+            wp_dequeue_script($handle);
+        }
+    }
+}, 12);

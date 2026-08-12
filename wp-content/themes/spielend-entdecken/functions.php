@@ -39,7 +39,6 @@ function se_enqueue_assets() {
     wp_enqueue_script('se-main', $template_uri . '/assets/js/main.js', [], SE_THEME_VERSION, true);
     wp_enqueue_script('se-wc-translate', $template_uri . '/assets/js/wc-translate.js', [], SE_THEME_VERSION, true);
     wp_enqueue_script('se-newsletter', $template_uri . '/assets/js/newsletter.js', [], SE_THEME_VERSION, true);
-    wp_enqueue_script('se-newsletter', $template_uri . '/assets/js/newsletter.js', [], SE_THEME_VERSION, true);
 }
 add_action('wp_enqueue_scripts', 'se_enqueue_assets');
 
@@ -236,4 +235,5 @@ require_once get_template_directory() . '/inc/schema.php';
 require_once get_template_directory() . '/inc/bulk-meta-tool.php';
 require_once get_template_directory() . '/inc/api-bulk-meta.php';
 require_once get_template_directory() . '/inc/ajax-handlers.php';
+require_once get_template_directory() . '/inc/security-hardening.php';
 require_once get_template_directory() . '/inc/image-optimization.php';

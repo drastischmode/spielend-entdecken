@@ -11,8 +11,8 @@ function se_add_json_ld() {
             '@type' => 'Product',
             'name' => get_the_title(),
             'description' => get_the_excerpt() ?: wp_trim_words(get_the_content(), 50),
-            'sku' => $product->get_sku(),
-            'mpn' => $product->get_sku(),
+            'sku' => $product->get_sku() ?: null,
+            'mpn' => $product->get_sku() ?: null,
             'brand' => [
                 '@type' => 'Brand',
                 'name' => 'Spielend Entdecken',
@@ -23,19 +23,26 @@ function se_add_json_ld() {
                 'priceCurrency' => get_woocommerce_currency(),
                 'price' => $product->get_price(),
                 'priceValidUntil' => date('Y-m-d', strtotime('+1 year')),
+                'itemCondition' => 'https://schema.org/NewCondition',
                 'availability' => $product->is_in_stock() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
                 'seller' => [
                     '@type' => 'Organization',
                     'name' => 'Spielend Entdecken',
                 ],
             ],
-            'image' => wp_get_attachment_image_url($product->get_image_id(), 'full') ?: get_template_directory_uri() . '/assets/images/placeholder.png',
+            'image' => wp_get_attachment_image_url($product->get_image_id(), 'full') ?: '',
         ];
+
+        // GTIN/EAN wenn verfügbar (WooCommerce-Standard-Meta: _gtin oder _ean)
+        $gtin = $product->get_meta('_gtin') ?: $product->get_meta('_ean');
+        if ($gtin) {
+            $schema['gtin13'] = $gtin;
+        }
 
         if ($product->get_average_rating()) {
             $schema['aggregateRating'] = [
                 '@type' => 'AggregateRating',
-                'ratingValue' => $product->get_average_rating(),
+                'ratingValue' => number_format($product->get_average_rating(), 1, '.', ''),
                 'reviewCount' => $product->get_review_count(),
                 'bestRating' => '5',
                 'worstRating' => '1',
@@ -57,8 +64,8 @@ function se_add_json_ld() {
             'name' => 'Spielend Entdecken',
             'description' => 'Hochwertiges Spielzeug für neugierige Kinder – sicher, nachhaltig, kreativ. Seit 1902. Dein Spielwarenladen vom Niederrhein.',
             'url' => home_url(),
-            'logo' => $logo_url ?: get_template_directory_uri() . '/assets/images/logo.png',
-            'image' => get_template_directory_uri() . '/assets/images/og-home.jpg',
+            'logo' => $logo_url ?: '',
+            'image' => $logo_url ?: '',
             'telephone' => get_option('spielend_contact_phone') ?: '+49 (0)2151 - 970267',
             'email' => get_option('spielend_contact_email') ?: 'info@spielend-entdecken.de',
             'address' => [
@@ -97,12 +104,18 @@ function se_add_json_ld() {
     }
 
     if (is_singular('post')) {
+        // Logo einmalig bestimmen (für publisher)
+        $blog_logo = '';
+        $blog_logo_id = get_theme_mod('custom_logo');
+        if ($blog_logo_id) {
+            $blog_logo = wp_get_attachment_image_url($blog_logo_id, 'full');
+        }
         $schema = [
             '@context' => 'https://schema.org',
             '@type' => 'BlogPosting',
             'headline' => get_the_title(),
             'description' => get_the_excerpt() ?: wp_trim_words(get_the_content(), 50),
-            'image' => get_the_post_thumbnail_url(get_the_ID(), 'full') ?: get_template_directory_uri() . '/assets/images/og-default.jpg',
+            'image' => get_the_post_thumbnail_url(get_the_ID(), 'full') ?: '',
             'author' => [
                 '@type' => 'Person',
                 'name' => get_the_author(),
@@ -113,7 +126,7 @@ function se_add_json_ld() {
                 'name' => 'Spielend Entdecken',
                 'logo' => [
                     '@type' => 'ImageObject',
-                    'url' => get_template_directory_uri() . '/assets/images/logo.png',
+                    'url' => $blog_logo ?: '',
                 ],
             ],
             'datePublished' => get_the_date('c'),
