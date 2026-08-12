@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-define('SE_THEME_VERSION', '1.0.1');
+define('SE_THEME_VERSION', '1.0.2');
 
 function se_setup() {
     add_theme_support('block-template-parts');
