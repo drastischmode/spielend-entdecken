@@ -58,7 +58,7 @@
     <hr class="wp-block-separator has-text-color has-base-color has-alpha-channel-opacity has-base-background-color has-background" style="margin-top:0;margin-bottom:20px"/>
     <!-- /wp:separator -->
     <!-- wp:paragraph {"align":"center","fontSize":"small"} -->
-    <p class="has-text-align-center has-small-font-size">© 2026 Spielend Entdecken. Alle Rechte vorbehalten.</p>
+    <p class="has-text-align-center has-small-font-size">© <span class="se-current-year">2026</span> Spielend Entdecken. Alle Rechte vorbehalten.</p>
     <!-- /wp:paragraph -->
 </footer>
 <!-- /wp:group -->
@@ -109,4 +109,5 @@
   document.addEventListener('wc_fragments_loaded', updateCount);
   setTimeout(updateCount, 2000);
 })();
+(function(){var y=document.querySelector('.se-current-year');if(y)y.textContent=new Date().getFullYear();})();
 </script>

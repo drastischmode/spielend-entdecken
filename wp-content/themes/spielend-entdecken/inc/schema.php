@@ -46,33 +46,38 @@ function se_add_json_ld() {
     }
 
     if (is_front_page() || is_home()) {
+        $logo_url = '';
+        $logo_id = get_theme_mod('custom_logo');
+        if ($logo_id) {
+            $logo_url = wp_get_attachment_image_url($logo_id, 'full');
+        }
         $schema = [
             '@context' => 'https://schema.org',
             '@type' => 'Store',
             'name' => 'Spielend Entdecken',
-            'description' => 'Dein Spielzeugladen im Netz – Hochwertiges Spielzeug für neugierige Kinder. Sicher, nachhaltig, kreativ.',
+            'description' => 'Hochwertiges Spielzeug für neugierige Kinder – sicher, nachhaltig, kreativ. Seit 1902. Dein Spielwarenladen vom Niederrhein.',
             'url' => home_url(),
-            'logo' => get_template_directory_uri() . '/assets/images/logo.png',
+            'logo' => $logo_url ?: get_template_directory_uri() . '/assets/images/logo.png',
             'image' => get_template_directory_uri() . '/assets/images/og-home.jpg',
-            'telephone' => get_option('se_contact_phone') ?: '+49 30 12345678',
-            'email' => get_option('se_contact_email') ?: 'info@spielend-entdecken.de',
+            'telephone' => get_option('spielend_contact_phone') ?: '+49 (0)2151 - 970267',
+            'email' => get_option('spielend_contact_email') ?: 'info@spielend-entdecken.de',
             'address' => [
                 '@type' => 'PostalAddress',
-                'streetAddress' => get_option('se_contact_address') ?: 'Musterstraße 123',
-                'addressLocality' => 'Berlin',
-                'postalCode' => '10115',
+                'streetAddress' => 'Hochstraße 57',
+                'addressLocality' => 'Tönisvorst',
+                'postalCode' => '47918',
                 'addressCountry' => 'DE',
             ],
             'geo' => [
                 '@type' => 'GeoCoordinates',
-                'latitude' => '52.5200',
-                'longitude' => '13.4050',
+                'latitude' => '51.3210',
+                'longitude' => '6.4837',
             ],
             'openingHoursSpecification' => [
                 [
                     '@type' => 'OpeningHoursSpecification',
                     'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                    'opens' => '09:00',
+                    'opens' => '10:00',
                     'closes' => '18:00',
                 ],
                 [
@@ -84,8 +89,8 @@ function se_add_json_ld() {
             ],
             'priceRange' => '€€',
             'currenciesAccepted' => 'EUR',
-            'paymentAccepted' => 'Cash, Credit Card, PayPal, Klarna, Apple Pay, Google Pay',
-            'areaServed' => ['DE', 'AT'],
+            'paymentAccepted' => 'Überweisung, Nachnahme, PayPal',
+            'areaServed' => ['DE'],
         ];
 
         echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>';

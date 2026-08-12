@@ -171,55 +171,6 @@ a:hover {
   }
 }
 
-/* Kategorie-Schnellnavigation über Produkt-Grid */
-.se-category-quicknav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  margin: 0 0 24px;
-}
-.se-qnav-item {
-  display: inline-block;
-  padding: 8px 18px;
-  background: #fff;
-  border: 2px solid #e9ecef;
-  border-radius: 50px;
-  font-size: .88rem;
-  font-weight: 600;
-  color: #444;
-  text-decoration: none;
-  transition: all .2s;
-}
-.se-qnav-item:hover {
-  border-color: var(--se-primary, #FF6B35);
-  color: var(--se-primary, #FF6B35);
-}
-.se-qnav-item.is-current {
-  background: var(--se-secondary, #2B7A62);
-  border-color: var(--se-secondary, #2B7A62);
-  color: #fff;
-}
-
-/* Breadcrumb */
-.se-breadcrumb {
-  max-width: 1200px;
-  margin: 20px auto 0;
-  padding: 0 20px;
-}
-.se-breadcrumb a {
-  color: #666;
-  text-decoration: none;
-}
-.se-breadcrumb a:hover {
-  color: var(--se-primary, #FF6B35);
-}
-.se-breadcrumb span {
-  color: #999;
-}
-.se-body-breadcrumb-wrap .se-breadcrumb {
-  margin-top: 24px;
-}
 /* Kein Breadcrumb auf der Startseite (front-page enthält Shop-Blöcke) */
 .home .wc-block-breadcrumbs,
 .home .se-breadcrumb {
@@ -242,11 +193,11 @@ html, body {
   right: 0;
   z-index: 999;
   width: 100%;
-  box-shadow: 0 1px 6px rgba(0,0,0,.04);
+  box-shadow: 0 1px 6px rgba(68,64,60,.04);
   transition: box-shadow .3s ease, padding .3s ease;
 }
 .se-header.scrolled {
-  box-shadow: 0 4px 20px rgba(0,0,0,.12);
+  box-shadow: 0 4px 20px rgba(68,64,60,.10);
 }
 /* Platz für den fixierten Header schaffen */
 body.admin-bar .se-header { top: 32px; }
@@ -353,28 +304,29 @@ body.admin-bar .se-header { top: 32px; }
 }
 
 /* Wunschliste */
-.spielend-wishlist-btn {  display: inline-flex;
+.spielend-wishlist-btn {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   margin: 10px 0;
   padding: 10px 18px;
-  background: #fff;
-  border: 2px solid #e8e8e8;
-  border-radius: 50px;
+  background: var(--se-surface);
+  border: 1px solid rgba(120,113,108,.18);
+  border-radius: var(--se-radius-full);
   font-size: .92rem;
   font-weight: 600;
-  color: #444;
+  color: var(--se-text-light);
   cursor: pointer;
-  transition: all .25s;
+  transition: all var(--se-transition);
 }
 .spielend-wishlist-btn:hover {
-  border-color: var(--se-primary, #FF6B35);
-  color: var(--se-primary, #FF6B35);
+  border-color: var(--se-primary);
+  color: var(--se-primary);
 }
 .spielend-wishlist-btn.is-active {
-  border-color: var(--se-primary, #FF6B35);
-  background: #fff5f0;
-  color: var(--se-primary, #FF6B35);
+  border-color: var(--se-primary);
+  background: #FFF5F0;
+  color: var(--se-primary);
 }
 .spielend-wishlist {
   max-width: 720px;
@@ -390,7 +342,7 @@ body.admin-bar .se-header { top: 32px; }
   padding: 16px;
   margin-bottom: 12px;
   position: relative;
-  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  box-shadow: 0 2px 8px rgba(68,64,60,.06);
 }
 .spielend-wishlist-item__img img {
   width: 80px;
@@ -406,7 +358,7 @@ body.admin-bar .se-header { top: 32px; }
 }
 .spielend-wishlist-item__title {
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--se-text);
   text-decoration: none;
 }
 .spielend-wishlist-item__title:hover { color: var(--se-primary, #FF6B35); }
@@ -598,7 +550,7 @@ body.admin-bar .se-header { top: 32px; }
   z-index: 998;
   background: #fff;
   border-top: 1px solid #eee;
-  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  box-shadow: 0 -4px 16px rgba(68,64,60,.08);
   padding: 6px 0;
   padding-bottom: calc(6px + env(safe-area-inset-bottom));
 }
@@ -711,12 +663,12 @@ a:hover {
 .wp-block-navigation-item a,
 .wp-block-navigation a,
 header .wp-block-navigation a {
-  color: #1A1A2E !important;
+  color: var(--se-text) !important;
 }
 .wp-block-navigation-item a:hover,
 .wp-block-navigation a:hover,
 header .wp-block-navigation a:hover {
-  color: #C44A1A !important;
+  color: var(--se-primary) !important;
 }
 
 /* Fließtext kräftiger */
@@ -832,7 +784,7 @@ header .wp-block-navigation a:hover {
   align-items: center;
 }
 .se-hero .wp-block-cover__background {
-  background: linear-gradient(180deg, rgba(26,26,46,.35) 0%, rgba(26,26,46,.55) 55%, rgba(26,26,46,.72) 100%) !important;
+  background: linear-gradient(180deg, rgba(68,64,60,.30) 0%, rgba(68,64,60,.52) 55%, rgba(68,64,60,.70) 100%) !important;
 }
 
 /* Konsistente Karten-Schatten */
@@ -865,7 +817,7 @@ main .product_title,
   margin: 0 0 24px !important;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #1A1A2E !important;
+  color: var(--se-text) !important;
 }
 
 /* Ergebnis-Zähler + Sortierung in einer sauberen Leiste */
@@ -969,44 +921,6 @@ main .product_title,
    Filter & Sortierung – professionelle Darstellung
    ============================================ */
 
-/* Kategorie-Filter als moderne Pill-Leiste */
-.se-category-quicknav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: flex-start;
-  margin: 16px 0 28px !important;
-  padding: 14px 16px;
-  background: #fff;
-  border: 1px solid #ececec;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(45,45,45,.05);
-}
-.se-qnav-item {
-  display: inline-flex;
-  align-items: center;
-  padding: 9px 18px;
-  background: #f7f7f8;
-  border: 1px solid #ececec;
-  border-radius: 50px;
-  font-size: .88rem;
-  font-weight: 500;
-  color: #4B5563;
-  text-decoration: none;
-  transition: all .2s;
-}
-.se-qnav-item:hover {
-  border-color: var(--se-primary, #FF6B35);
-  color: var(--se-primary, #FF6B35);
-  background: #fff5f0;
-}
-.se-qnav-item.is-current {
-  background: var(--se-secondary, #2B7A62);
-  border-color: var(--se-secondary, #2B7A62);
-  color: #fff;
-  font-weight: 600;
-}
-
 /* Sortierung + Ergebnis in einer sauberen Toolbar */
 .woocommerce .woocommerce-ordering,
 .wc-block-catalog-sorting {
@@ -1015,11 +929,11 @@ main .product_title,
 .woocommerce .woocommerce-ordering select,
 .orderby {
   padding: 9px 14px;
-  border: 1px solid #e4e4e7;
+  border: 1px solid rgba(120,113,108,.18);
   border-radius: 10px;
   font-size: .88rem;
-  color: #1a1a2e;
-  background: #fff;
+  color: var(--se-text);
+  background: var(--se-surface);
   cursor: pointer;
   outline: none;
 }
@@ -1085,6 +999,40 @@ footer h3.wp-block-heading {
   background-color: var(--se-secondary) !important;
 }
 
+/* Blog-Post-Karten (Blog-Seite) */
+.se-post-card {
+  background: var(--se-surface);
+  border-radius: var(--se-radius);
+  box-shadow: var(--se-shadow);
+  border: 1px solid rgba(120,113,108,.10);
+  overflow: hidden;
+  transition: transform var(--se-transition), box-shadow var(--se-transition);
+}
+.se-post-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--se-shadow-hover);
+}
+.se-post-card .wp-block-post-title a {
+  color: var(--se-text);
+  text-decoration: none;
+  font-family: var(--se-font-heading);
+}
+.se-post-card .wp-block-post-title a:hover {
+  color: var(--se-primary);
+}
+.se-post-card .wp-block-post-date {
+  color: var(--se-text-muted);
+  font-size: .88rem;
+}
+.se-post-card .wp-block-post-excerpt {
+  color: var(--se-text-light);
+  font-size: .92rem;
+}
+.se-post-card .wp-block-post-excerpt__more-text a {
+  color: var(--se-primary);
+  font-weight: 600;
+}
+
 /* Breadcrumb warm */
 .se-breadcrumb a {
   color: var(--se-text-light);
@@ -1094,22 +1042,6 @@ footer h3.wp-block-heading {
 }
 .se-breadcrumb span {
   color: var(--se-text-muted);
-}
-
-/* Whishlist-Button warm */
-.spielend-wishlist-btn {
-  border: 1px solid rgba(120,113,108,.18);
-  color: var(--se-text-light);
-  border-radius: var(--se-radius-full);
-}
-.spielend-wishlist-btn:hover {
-  border-color: var(--se-primary);
-  color: var(--se-primary);
-}
-.spielend-wishlist-btn.is-active {
-  border-color: var(--se-primary);
-  background: #FFF5F0;
-  color: var(--se-primary);
 }
 
 /* Section-Heading mit Wärme */
