@@ -238,3 +238,32 @@ git push origin main
 ## Lokale Dateien
 - `/tmp/opencode/` — Theme-Kopien (header/footer/home.html, functions.php), Import-Skripte, Logo.png
 - Alte Seite scraped: `https://www.spielend-entdecken.de` (Produkte/Kategorien/Impressum/Datenschutz-Quelle)
+
+## QA-Audit (12.08.2026) – abgeschlossen
+Kritische Fehler behoben (Commits `a4dbaee`, `e2accd0`, `6166ff7`):
+- **Add-to-Cart 400-Fehler**: `main.js` nutzte `admin-ajax.php + woocommerce_ajax_add_to_cart` (existiert nicht) → auf `/?wc-ajax=add_to_cart` gefixt
+- **4 fehlende AJAX-Handler** (`inc/ajax-handlers.php`): Suche-Autocomplete, Quick-View, Cart-Count, Wishlist
+- **Newsletter-Formular** (`spielend_newsletter_form` Shortcode + `newsletter.js` → REST `/newsletter/subscribe`)
+- **Trust-Badges**: 136 Produkte per Standalone-Import befüllt (133 Alter, 69 Nachhaltig)
+- **Security-Header** (PHP `send_headers` + .htaccess) — aber InfinityFree/OpenResty liefert sie NICHT aus (Hosting-Limitation)
+- **14 temporäre PHP-Scripts** aus htdocs-Root entfernt (Backdoor-Risiko)
+- **SEO**: Twitter Cards, og:locale, og:site_name, Produkt-Schema (itemCondition, GTIN), 404-Referenzen (og-home.jpg) entfernt
+- **Sicherheits-Härtung** (`inc/security-hardening.php`): XML-RPC, Login-Errors, REST-Users
+
+## AKTUELL: Konto suspendiert (InfinityFree CPU-Limit)
+- **Ursache**: Zu viele automatisierte Anfragen (PageSpeed-API, Playwright-Audits) → CPU-Limit erreicht
+- **Sperrdauer**: 24h, **Reaktivierung automatisch 13.08.2026 18:25 UTC**
+- **Während der Sperre**: HTTP zeigt "Domain Suspended" (nur per Playwright erkennbar, curl zeigt WAF-Challenge), FTP = 530, wp-login blockiert
+- **Cron-Deploy-System aktiv** (wartet auf Reaktivierung):
+  - Cron 1 (primär): `13.08. 18:30 UTC` → `/tmp/opencode/deploy-qa-cron.sh`
+  - Cron 2 (Backup): `13.08. 21:30 UTC` → `/tmp/opencode/deploy-qa-backup.sh`
+  - Deployt: functions.php, schema.php, security-hardening.php, image-optimization.php, ajax-handlers.php
+  - Marker `/tmp/opencode/.deploy-qa-success` → löscht Backup-Cron automatisch bei Erfolg
+  - ⚠️ `/tmp/opencode/*.sh` kann der System-Cleaner löschen → vor Ablauf neu prüfen
+- **Nach Reaktivierung offen** (DB-Inhalt, wp-admin): Impressum-E-Mail (lessenich.net → spielend-entdecken.de), Checkout-Permalink (/checkout-2/ → /kasse/)
+
+## PRÄVENTION (gegen erneute CPU-Sperre)
+- Keine PageSpeed-API-Serien, keine Massen-Playwright-Audits auf InfinityFree
+- Domain-Check IMMER per Playwright (curl erkennt Suspension nicht — immer 200 WAF-Challenge)
+- FTP-Zugriffe minimieren, nicht in Schleifen
+- JRB Remote API ist auf diesem Hosting NICHT nutzbar (`/wp-json/*` wird vom WAF gefiltert)
