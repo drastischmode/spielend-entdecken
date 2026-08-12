@@ -1,0 +1,7 @@
+.se-whatsapp-float{position:fixed;bottom:24px;right:24px;z-index:99998;width:60px;height:60px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none;transition:transform .3s ease,width .3s ease;animation:se-wa-float 3s ease-in-out infinite}
+.se-whatsapp-float:hover{transform:scale(1.08);animation-play-state:paused}
+.se-whatsapp-float svg{width:32px;height:32px}
+.se-whatsapp-float .se-whatsapp-label{position:absolute;right:70px;top:50%;transform:translateY(-50%);background:#2D2D2D;color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.se-whatsapp-float:hover .se-whatsapp-label{opacity:1}
+@keyframes se-wa-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media(max-width:768px){.se-whatsapp-float{width:54px;height:54px;bottom:16px;right:16px}}

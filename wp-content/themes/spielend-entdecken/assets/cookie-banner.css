@@ -1,0 +1,9 @@
+#se-cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:999999;background:#2D2D2D;color:#fff;padding:16px 20px;box-shadow:0 -4px 20px rgba(0,0,0,.3);font-size:14px;line-height:1.5}
+#se-cookie-banner .se-cookie-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:16px;justify-content:space-between}
+#se-cookie-banner p{margin:0;flex:1 1 60%}
+#se-cookie-banner a{color:#F9C80E;text-decoration:underline}
+#se-cookie-banner .se-cookie-buttons{display:flex;gap:10px;flex-wrap:wrap}
+#se-cookie-banner button{border:none;border-radius:50px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer}
+#se-cookie-banner .se-cookie-accept[data-choice=all]{background:#FF6B35;color:#fff}
+#se-cookie-banner .se-cookie-accept[data-choice=essential]{background:transparent;color:#fff;border:1px solid #fff}
+@media(max-width:600px){#se-cookie-banner .se-cookie-buttons{flex:1 1 100%}}

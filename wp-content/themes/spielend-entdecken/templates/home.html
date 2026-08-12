@@ -1,0 +1,39 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","style":{"spacing":{"padding":{"top":"60px","bottom":"60px"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group" style="padding-top:60px;padding-bottom:60px">
+    <!-- wp:heading {"textAlign":"center","level":1} -->
+    <h1 class="wp-block-heading has-text-align-center">Blog &amp; Neuigkeiten</h1>
+    <!-- /wp:heading -->
+    <!-- wp:paragraph {"align":"center"} -->
+    <p class="has-text-align-center">Tipps, Trends und Neuigkeiten rund um Spielzeug – aus Tönisvorst für Familien.</p>
+    <!-- /wp:paragraph -->
+
+    <!-- wp:query {"query":{"perPage":9,"pages":0,"offset":0,"postType":"post","categoryName":"","tag":"","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"displayLayout":{"type":"flex","columns":3},"layout":{"type":"default"}} -->
+    <div class="wp-block-query">
+        <!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+        <!-- wp:group {"style":{"spacing":{"padding":{"bottom":"24px"}},"border":{"radius":"12px"}},"className":"se-post-card"} -->
+        <div class="wp-block-group se-post-card" style="border-radius:12px;padding-bottom:24px">
+            <!-- wp:post-featured-image {"isLink":true,"aspectRatio":"4/3","style":{"border":{"radius":"12px"}}} /-->
+            <!-- wp:post-title {"level":3,"isLink":true} /-->
+            <!-- wp:post-date {"format":"j. F Y"} /-->
+            <!-- wp:post-excerpt {"moreText":"Weiterlesen","excerptLength":20} /-->
+        </div>
+        <!-- /wp:group -->
+        <!-- /wp:post-template -->
+        <!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
+        <!-- wp:query-pagination-previous /-->
+        <!-- wp:query-pagination-numbers /-->
+        <!-- wp:query-pagination-next /-->
+        <!-- /wp:query-pagination -->
+        <!-- wp:query-no-results -->
+        <!-- wp:paragraph {"placeholder":"Keine Beiträge gefunden.","align":"center"} -->
+        <p class="has-text-align-center">Keine Beiträge gefunden.</p>
+        <!-- /wp:paragraph -->
+        <!-- /wp:query-no-results -->
+    </div>
+    <!-- /wp:query -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

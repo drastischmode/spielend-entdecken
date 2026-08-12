@@ -1,0 +1,48 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"80px","bottom":"80px"}}}} -->
+<main class="wp-block-group" style="padding-top:80px;padding-bottom:80px">
+    <!-- wp:group {"style":{"spacing":{"padding":{"top":"40px","bottom":"40px"}}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"center"}} -->
+    <div class="wp-block-group" style="padding-top:40px;padding-bottom:40px">
+        <!-- wp:heading {"level":1,"textAlign":"center","style":{"typography":{"fontSize":"4rem"}}} -->
+        <h1 class="wp-block-heading has-text-align-center" style="font-size:4rem">404</h1>
+        <!-- /wp:heading -->
+        <!-- wp:paragraph {"textAlign":"center","style":{"typography":{"fontSize":"1.25rem"}}} -->
+        <p class="has-text-align-center" style="font-size:1.25rem">Ups! Da ist ein Spielzeug verloren gegangen.<br>Die Seite, die du suchst, existiert nicht (mehr).</p>
+        <!-- /wp:paragraph -->
+        <!-- wp:search {"label":"Suche nach Spielzeug","buttonText":"Suchen","style":{"border":{"radius":"50px"}}} /-->
+        
+        <!-- wp:group {"style":{"spacing":{"margin":{"top":"40px"}}}} -->
+        <div class="wp-block-group" style="margin-top:40px">
+            <!-- wp:heading {"level":3,"textAlign":"center"} -->
+            <h3 class="wp-block-heading has-text-align-center">Beliebte Kategorien</h3>
+            <!-- /wp:heading -->
+            <!-- wp:pattern {"slug":"spielend-entdecken/category-grid"} /-->
+        </div>
+        <!-- /wp:group -->
+        
+        <!-- wp:group {"style":{"spacing":{"margin":{"top":"40px"}}}} -->
+        <div class="wp-block-group" style="margin-top:40px">
+            <!-- wp:heading {"level":3,"textAlign":"center"} -->
+            <h3 class="wp-block-heading has-text-align-center">Beliebtes Spielzeug</h3>
+            <!-- /wp:heading -->
+            <!-- wp:woocommerce/product-collection {"queryId":2,"query":{"perPage":4,"pages":0,"offset":0,"postType":"product","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"taxQuery":[],"isProductCollectionBlock":true,"featured":true,"woocommerceOnSale":false,"woocommerceStockStatus":["instock"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[],"filterStockStatus":true},"tagName":"div","displayLayout":{"type":"flex","columns":4}} /-->
+        </div>
+        <!-- /wp:group -->
+        
+        <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"30px"}}}} -->
+        <div class="wp-block-buttons" style="margin-top:30px">
+            <!-- wp:button {"backgroundColor":"primary","textColor":"base"} -->
+            <div class="wp-block-button"><a class="wp-block-button__link has-base-color has-primary-background-color has-text-color has-background wp-element-button" href="/">Zurück zur Startseite</a></div>
+            <!-- /wp:button -->
+            <!-- wp:button {"backgroundColor":"secondary","textColor":"base","className":"is-style-outline"} -->
+            <div class="wp-block-button is-style-outline"><a class="wp-block-button__link has-secondary-color has-text-color has-background wp-element-button" href="/kontakt">Kontakt aufnehmen</a></div>
+            <!-- /wp:button -->
+        </div>
+        <!-- /wp:buttons -->
+    </div>
+    <!-- /wp:group -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

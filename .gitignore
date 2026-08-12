@@ -1,0 +1,3 @@
+# WP core / vendor (nicht relevant für unser Theme/Plugin)
+wp-content/plugins/*
+!wp-content/plugins/spielend-essentials/
