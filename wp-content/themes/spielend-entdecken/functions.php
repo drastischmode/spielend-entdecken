@@ -42,65 +42,14 @@ function se_enqueue_assets() {
 add_action('wp_enqueue_scripts', 'se_enqueue_assets');
 
 function se_admin_dashboard_widget() {
-    wp_add_dashboard_widget(
-        'spielend_overview',
-        'Spielend Entdecken – Übersicht',
-        'se_render_dashboard_widget'
-    );
+    // Altes Widget entfernen, neues (optimiertes) aktivieren
+    remove_meta_box('spielend_overview', 'dashboard', 'normal');
 }
-add_action('wp_dashboard_setup', 'se_admin_dashboard_widget');
+add_action('wp_dashboard_setup', 'se_admin_dashboard_widget', 1);
 
 function se_render_dashboard_widget() {
-    $orders_open = 0;
-    $sales_today = 0;
-    $products = 0;
-    $reviews = 0;
-
-    if (class_exists('WooCommerce')) {
-        $orders_open = count(wc_get_orders(array('status' => array('processing', 'on-hold'), 'limit' => -1)));
-        $today = date('Y-m-d');
-        $orders_today = wc_get_orders(array('date_created' => '>=' . $today, 'status' => array('completed', 'processing'), 'limit' => -1));
-        foreach ($orders_today as $o) {
-            $sales_today += (float) $o->get_total();
-        }
-        $products = (int) wp_count_posts('product')->publish;
-        $reviews = count(get_comments(array('post_type' => 'product', 'status' => 'approve', 'count' => true)));
-    }
-
-    $pending = wp_count_posts('page')->publish;
-    $contacts = (int) get_option('spielend_contact_count', 0);
-    ?>
-<div style="padding:6px 2px;">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
-        <div style="flex:1;min-width:130px;background:#FFF8F0;border:1px solid #FFE0C2;border-radius:10px;padding:12px;text-align:center;">
-            <div style="font-size:26px;font-weight:700;color:#CC4D00;"><?php echo esc_html($orders_open); ?></div>
-            <div style="font-size:12px;color:#666;">Offene Bestellungen</div>
-        </div>
-        <div style="flex:1;min-width:130px;background:#F0FAF6;border:1px solid #C8E8DC;border-radius:10px;padding:12px;text-align:center;">
-            <div style="font-size:26px;font-weight:700;color:#2B7A62;"><?php echo number_format($sales_today, 2, ',', '.'); ?> €</div>
-            <div style="font-size:12px;color:#666;">Umsatz heute</div>
-        </div>
-        <div style="flex:1;min-width:130px;background:#FFFBE6;border:1px solid #F5E6A8;border-radius:10px;padding:12px;text-align:center;">
-            <div style="font-size:26px;font-weight:700;color:#E8A800;"><?php echo esc_html($products); ?></div>
-            <div style="font-size:12px;color:#666;">Produkte</div>
-        </div>
-        <div style="flex:1;min-width:130px;background:#F3F0FF;border:1px solid #DED6F5;border-radius:10px;padding:12px;text-align:center;">
-            <div style="font-size:26px;font-weight:700;color:#6C4DF4;"><?php echo esc_html($reviews); ?></div>
-            <div style="font-size:12px;color:#666;">Bewertungen</div>
-        </div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <a href="edit.php?post_type=shop_order" class="button button-primary">Bestellungen</a>
-        <a href="edit.php?post_type=product" class="button">Produkte</a>
-        <a href="post-new.php?post_type=post" class="button">Blog schreiben</a>
-        <a href="admin.php?page=spielend-theme-options" class="button">Theme Optionen</a>
-        <a href="plugins.php" class="button">Plugins</a>
-    </div>
-    <p style="margin-top:12px;color:#888;font-size:12px;">
-        <a href="<?php echo esc_url(home_url('/')); ?>" target="_blank">Website ansehen ↗</a>
-    </p>
-</div>
-    <?php
+    // Wird durch inc/dashboard-optimized.php ersetzt (se_render_optimized_dashboard_widget).
+    return;
 }
 
 function se_seo_meta() {
@@ -145,6 +94,7 @@ function se_optimize_woocommerce_scripts() {
 add_action('wp_enqueue_scripts', 'se_optimize_woocommerce_scripts', 99);
 
 require_once get_template_directory() . '/inc/theme-options.php';
+require_once get_template_directory() . '/inc/dashboard-optimized.php';
 
 function se_hero_shortcode() {
     $title    = spielend_opt('spielend_hero_title', 'Entdecke die Welt des Spielens');

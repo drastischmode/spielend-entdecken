@@ -73,12 +73,13 @@ function se_bulk_meta_page() {
     // UI
     ?>
     <div class="wrap">
-        <h1>Spielend – Bulk-Meta-Import</h1>
-        <p>Schnell-Tools zum Befüllen von Altersempfehlung und Nachhaltigkeit.</p>
+        <h1>Spielend – Trust-Elemente befüllen</h1>
+        <p>Diese Daten erscheinen als Badges auf den Produktkarten und Produktseiten:
+            <strong>„Ab X Jahren"</strong> und <strong>„Nachhaltig"</strong>. Mehr ausgefüllte Felder = mehr Vertrauen bei Kunden.</p>
 
         <div style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #ddd; max-width: 600px;">
-            <h2>1. Auto-Fill nach Kategorie</h2>
-            <p>Setzt intelligente Defaults basierend auf der Produkt-Kategorie:</p>
+            <h2>1. Empfohlen: Auto-Fill nach Kategorie</h2>
+            <p>Setzt automatisch passende Werte, basierend auf der Produkt-Kategorie. Schon befüllte Produkte bleiben unverändert:</p>
             <ul style="padding-left: 20px;">
                 <li><strong>Tonies:</strong> Ab 3 Jahren, Nachhaltig</li>
                 <li><strong>LEGO:</strong> Ab 4 Jahren</li>
@@ -95,7 +96,8 @@ function se_bulk_meta_page() {
         </div>
 
         <div style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #ddd; max-width: 600px;">
-            <h2>2. Alle Produkte: Altersempfehlung setzen</h2>
+            <h2>2. Altersempfehlung für ALLE setzen</h2>
+            <p>Überschreibt alle Produkte mit dem gleichen Wert. Nur sinnvoll, wenn alle Produkte dieselbe Altersgruppe haben.</p>
             <form method="POST">
                 <?php wp_nonce_field('se_bulk_meta_nonce'); ?>
                 <label for="age_value">Altersempfehlung (Jahre):</label><br>
@@ -106,7 +108,8 @@ function se_bulk_meta_page() {
         </div>
 
         <div style="background: #fff; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #ddd; max-width: 600px;">
-            <h2>3. Alle Produkte: Als Nachhaltig markieren</h2>
+            <h2>3. Alle Produkte als „Nachhaltig" markieren</h2>
+            <p>Nur verwenden, wenn dein Sortiment tatsächlich überwiegend nachhaltig ist.</p>
             <form method="POST">
                 <?php wp_nonce_field('se_bulk_meta_nonce'); ?>
                 <input type="hidden" name="se_bulk_action" value="set_all_sustainable">

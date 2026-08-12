@@ -94,6 +94,9 @@
   --z-fixed: 300;
   --z-modal: 400;
   --z-tooltip: 500;
+
+  /* Fixed Header Höhe (Hero/Inhalte kompensieren) */
+  --header-height: 84px;
 }
 
 /* ============================================
@@ -128,6 +131,22 @@ body {
   font-size: clamp(14px, 2vw, 16px);
   line-height: var(--line-height-normal);
   letter-spacing: -0.01em;
+}
+
+/* Fixed Header kompensieren – Seiten ohne Hero bekommen Abstand */
+body:not(.home) .site-main,
+body:not(.home) .wp-site-blocks > main,
+body:not(.home) .wp-site-blocks > .wp-block-template-part:not(.se-header) {
+  padding-top: var(--header-height);
+}
+body.home .se-hero + .wp-block-group {
+  /* Nach dem Hero normal weiter */
+}
+
+/* Hero beginnt direkt unter dem Header, Inhalt dahinter ohne zusätzlichen Offset */
+body.home .se-hero ~ *:not(.se-hero) {
+  position: relative;
+  z-index: 1;
 }
 
 /* Überschriften */
@@ -629,10 +648,63 @@ button,
   border-bottom: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--transition-fast);
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
 }
 
 .se-header.scrolled {
   box-shadow: var(--shadow-md);
+}
+
+/* Header: Spalten immer in einer Reihe (Desktop) */
+.se-header .wp-block-columns {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.se-header .wp-block-column {
+  flex: 0 1 auto !important;
+  min-width: 0;
+}
+
+/* Logo */
+.se-header .wp-block-column:first-child {
+  flex-basis: 22% !important;
+}
+.se-header .wp-block-column:first-child .wp-block-site-logo img {
+  max-height: 52px;
+  width: auto;
+  height: auto;
+}
+
+/* Navigation */
+.se-header .wp-block-column:nth-child(2) {
+  flex: 1 1 auto !important;
+}
+.se-header .wp-block-navigation .wp-block-navigation-item {
+  margin: 0 var(--space-sm);
+}
+
+/* Rechte Spalte: Suche + MiniCart horizontal */
+.se-header .wp-block-column:last-child {
+  flex-basis: 28% !important;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+}
+.se-header .wp-block-column:last-child > * {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.se-header .se-search-form {
+  max-width: 220px;
+}
+.se-header .wc-block-mini-cart {
+  flex-shrink: 0;
 }
 
 .wp-block-navigation a,
@@ -759,6 +831,38 @@ button,
 }
 
 /* ============================================
+   HEADER RESPONSIVE (kleine Tablets, 480–768px)
+   Suche + MiniCart in die 3. Spalte, kompakt
+   ============================================ */
+@media (max-width: 480px) {
+  /* Auf ganz kleinen Screens: Logo | Suche-Icon | MiniCart | Hamburger.
+     Das Suchformular selbst wird kompakter (nur Icon-Suche). */
+  .se-header .wp-block-column:first-child {
+    flex: 0 0 34% !important;
+  }
+  .se-header .wp-block-column:first-child .wp-block-site-logo img {
+    max-height: 38px;
+  }
+  .se-header .wp-block-column:nth-child(2) {
+    flex: 0 0 auto !important;
+  }
+  .se-header .wp-block-column:nth-child(2) .wp-block-navigation__responsive-container-open {
+    padding: 4px;
+  }
+  .se-header .se-search-form-wrap {
+    padding-left: 6px;
+  }
+  .se-header .se-search-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .se-header .wc-block-mini-cart__button {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+  }
+}
+
+/* ============================================
    7. MOBILE-BOTTOM-BAR
    ============================================ */
 
@@ -796,13 +900,16 @@ button,
   align-items: center;
   justify-content: center;
   gap: 2px;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-sm) calc(var(--space-sm) + 2px);
   color: var(--color-text-muted);
   text-decoration: none;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: var(--font-weight-semibold);
   position: relative;
   transition: color var(--transition-fast);
+  flex: 1 1 0;
+  max-width: 90px;
+  white-space: nowrap;
 }
 
 .se-mobile-bar a:hover,
@@ -970,13 +1077,14 @@ label {
 .se-hero {
   position: relative;
   overflow: hidden;
-  min-height: calc(100vh - 130px);
+  min-height: calc(100vh - var(--header-height));
   display: flex;
   align-items: center;
   justify-content: center;
   background-size: cover;
   background-position: center;
-  margin-top: -130px;
+  /* Unter dem fixed Header starten (Header ~84px) */
+  margin-top: var(--header-height);
 }
 
 .se-hero-video {
