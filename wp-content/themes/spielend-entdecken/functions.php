@@ -38,6 +38,8 @@ function se_enqueue_assets() {
     wp_enqueue_script('se-animations', $template_uri . '/assets/js/animations.js', [], SE_THEME_VERSION, true);
     wp_enqueue_script('se-main', $template_uri . '/assets/js/main.js', [], SE_THEME_VERSION, true);
     wp_enqueue_script('se-wc-translate', $template_uri . '/assets/js/wc-translate.js', [], SE_THEME_VERSION, true);
+    wp_enqueue_script('se-newsletter', $template_uri . '/assets/js/newsletter.js', [], SE_THEME_VERSION, true);
+    wp_enqueue_script('se-newsletter', $template_uri . '/assets/js/newsletter.js', [], SE_THEME_VERSION, true);
 }
 add_action('wp_enqueue_scripts', 'se_enqueue_assets');
 
@@ -52,21 +54,47 @@ function se_render_dashboard_widget() {
     return;
 }
 
+function se_security_headers() {
+    if (is_admin()) return;
+    header('X-Frame-Options: SAMEORIGIN');
+    header('X-Content-Type-Options: nosniff');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
+    header('X-XSS-Protection: 1; mode=block');
+}
+add_action('send_headers', 'se_security_headers');
+
+/** WordPress-Version nicht öffentlich ausgeben (Sicherheit) */
+function se_remove_generator_tag() {
+    remove_action('wp_head', 'wp_generator');
+}
+add_action('init', 'se_remove_generator_tag');
+add_filter('the_generator', '__return_empty_string');
+
+/** Generator-Tags von Plugins entfernen (u. a. WooCommerce) */
+add_filter('get_the_generator_html', '__return_empty_string');
+add_filter('woocommerce_show_page_title', '__return_false');
+
 function se_seo_meta() {
     $description = get_bloginfo('description');
     if (!$description) {
         $description = 'Hochwertiges Spielzeug seit 1902 – Spielend Entdecken in Tönisvorst. Nachhaltiges Holzspielzeug, kreative Puzzles & mehr. Jetzt stöbern!';
     }
     echo '<meta name="description" content="' . esc_attr($description) . '" />' . "\n";
+    echo '<meta property="og:locale" content="de_DE" />' . "\n";
     echo '<meta property="og:title" content="' . esc_attr(get_bloginfo('name')) . '" />' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($description) . '" />' . "\n";
     echo '<meta property="og:type" content="website" />' . "\n";
     echo '<meta property="og:url" content="' . esc_url(home_url('/')) . '" />' . "\n";
+    echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr(get_bloginfo('name')) . '" />' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($description) . '" />' . "\n";
     $logo_id = get_theme_mod('custom_logo');
     if ($logo_id) {
         $logo_url = wp_get_attachment_image_url($logo_id, 'full');
         if ($logo_url) {
             echo '<meta property="og:image" content="' . esc_url($logo_url) . '" />' . "\n";
+            echo '<meta name="twitter:image" content="' . esc_url($logo_url) . '" />' . "\n";
         }
     }
 }

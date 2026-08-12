@@ -53,8 +53,30 @@ final class Spielend_Essentials {
 		add_shortcode( 'spielend_featured_products', array( $this, 'shortcode_featured_products' ) );
 		add_shortcode( 'spielend_wishlist_button', array( $this, 'shortcode_wishlist_button' ) );
 		add_shortcode( 'spielend_wishlist_page', array( $this, 'shortcode_wishlist_page' ) );
+		add_shortcode( 'spielend_newsletter_form', array( $this, 'shortcode_newsletter_form' ) );
 		add_filter( 'the_content', array( $this, 'clean_category_grid_output' ), 20 );
 		add_filter( 'render_block', array( $this, 'clean_category_grid_output' ), 20 );
+	}
+
+	/** Newsletter-Formular (nutzt den REST-Endpoint /newsletter/subscribe) */
+	public function shortcode_newsletter_form( $atts ): string {
+		$atts = shortcode_atts( array( 'title' => '10% Rabatt sichern!' ), $atts, 'spielend_newsletter_form' );
+		$nonce = wp_create_nonce( 'wp_rest' );
+		ob_start();
+		?>
+<div class="se-newsletter" data-rest="<?php echo esc_url( rest_url( 'spielend/v1/newsletter/subscribe' ) ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>">
+	<h3 class="se-newsletter__title"><?php echo esc_html( $atts['title'] ); ?></h3>
+	<p class="se-newsletter__sub">Abonniere unseren Newsletter und erhalte 10% auf deine erste Bestellung.</p>
+	<form class="se-newsletter__form" novalidate>
+		<label class="screen-reader-text" for="se-newsletter-email">E-Mail-Adresse</label>
+		<input type="email" id="se-newsletter-email" name="email" placeholder="Deine E-Mail-Adresse" required class="se-newsletter__input">
+		<button type="submit" class="se-newsletter__btn wp-element-button">Anmelden</button>
+		<input type="text" name="honeypot" value="" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+	</form>
+	<p class="se-newsletter__msg" role="status"></p>
+</div>
+		<?php
+		return (string) ob_get_clean();
 	}
 
 	public function load_textdomain(): void {
