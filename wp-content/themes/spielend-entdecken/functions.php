@@ -188,6 +188,7 @@ function se_hero_shortcode() {
     <span aria-hidden="true" class="wp-block-cover__background has-background-dim has-background-dim-60 has-background-gradient has-spielend-hero-gradient-background"></span>
     <?php if ($video) : ?>
     <video class="se-hero-video" autoplay muted loop playsinline preload="metadata"<?php echo $poster ? ' poster="' . esc_url($poster) . '"' : ''; ?>>
+        <source src="<?php echo esc_url(str_replace('.mp4', '.webm', $video)); ?>" type="video/webm">
         <source src="<?php echo esc_url($video); ?>" type="video/mp4">
     </video>
     <?php endif; ?>

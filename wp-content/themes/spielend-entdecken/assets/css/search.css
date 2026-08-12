@@ -1,45 +1,62 @@
-/* Suchformular im Header */
+/* Suchformular im Header – State of the Art */
 .se-search-form {
   width: 100%;
-  max-width: 340px;
+  max-width: 400px;
 }
 .se-search-form-wrap {
   display: flex;
   align-items: center;
   background: #fff;
-  border: 2px solid #e8e8e8;
+  border: 2px solid #e4e4e7;
   border-radius: 50px;
-  padding: 2px 4px 2px 14px;
-  transition: border-color .3s, box-shadow .3s;
+  padding: 3px 4px 3px 16px;
+  transition: border-color .25s, box-shadow .25s;
 }
 .se-search-form-wrap:focus-within {
   border-color: var(--se-primary, #FF6B35);
-  box-shadow: 0 0 0 4px rgba(255,107,53,.12);
+  box-shadow: 0 0 0 4px rgba(255,107,53,.14), 0 4px 16px rgba(255,107,53,.1);
+}
+.se-search-icon {
+  width: 18px;
+  height: 18px;
+  color: #9ca3af;
+  flex-shrink: 0;
 }
 .se-search-input {
   flex: 1;
   border: none;
   background: none;
-  padding: 9px 8px;
-  font-size: .92rem;
+  padding: 10px 10px;
+  font-size: .95rem;
   outline: none;
   min-width: 0;
   color: #1a1a2e;
 }
+.se-search-input::placeholder {
+  color: #9ca3af;
+}
 .se-search-btn {
   border: none;
-  background: var(--se-primary, #FF6B35);
+  background: linear-gradient(135deg, #FF6B35, #E85D04);
   color: #fff;
   border-radius: 50px;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  font-size: 1rem;
   flex-shrink: 0;
-  transition: background .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 3px 10px rgba(255,107,53,.3);
+}
+.se-search-btn svg {
+  width: 18px;
+  height: 18px;
 }
 .se-search-btn:hover {
-  background: var(--se-secondary, #2B7A62);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(255,107,53,.4);
 }
 
 @media (max-width: 768px) {
