@@ -196,7 +196,25 @@ Wichtig: Template-Parts mit `<meta>`-Tags werden NICHT in den `<head>` gerendert
 - **Struktur**: `wp-content/themes/spielend-entdecken/` (komplett vom Server gemirrort) + `wp-content/plugins/spielend-essentials/` + Docs
 - **.gitignore**: ignoriert andere Plugins (nur spielend-essentials tracked), keine WP-Core-Dateien
 - **WICHTIG**: Repo enthält nur Theme/Plugin/Docs — KEINe Uploads (Produktbilder liegen nur auf Server)
-- **Sync-Prozedur nach Änderungen**: Theme/Plugin-Dateien ändern → per FTP deployen → `lftp mirror` vom Server zurück nach `/home/ubuntu/spielend/wp-content/...` → `git add -A && git commit` (siehe unten)
+- **Remote**: https://github.com/drastischmode/spielend-entdecken (öffentlich, gh-CLI als `drastischmode` authentifiziert)
+- **History vereint** via `git merge --strategy-option=ours --allow-unrelated-histories origin/main`
+
+### Push-Workflow (nach jeder Theme/Plugin-Änderung)
+```bash
+# 1. Änderungen auf dem Server deployen (FTP, wie gewohnt)
+# 2. Aktuellen Stand vom Server spiegeln
+lftp -u "if0_42146922","ft0Pddadm4" ftpupload.net -e "
+mirror /spielend.ct.ws/htdocs/wp-content/themes/spielend-entdecken /home/ubuntu/spielend/wp-content/themes/spielend-entdecken
+mirror /spielend.ct.ws/htdocs/wp-content/plugins/spielend-essentials /home/ubuntu/spielend/wp-content/plugins/spielend-essentials
+quit"
+# 3. Commit + Push
+cd /home/ubuntu/spielend
+git add -A
+git commit -m "Beschreibung der Änderung"
+git push origin main
+```
+- Zugangsdaten NIEMALS committen (FTP-Passwort, API-Keys, Tokens)
+- Produktbilder/Uploads bleiben aus dem Repo (nur Server)
 
 ## Lokale Dateien
 - `/tmp/opencode/` — Theme-Kopien (header/footer/home.html, functions.php), Import-Skripte, Logo.png
