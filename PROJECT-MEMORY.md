@@ -53,6 +53,15 @@ cv = AES.new(bytes.fromhex(m[0]), AES.MODE_CBC, bytes.fromhex(m[1])).decrypt(byt
 - **Verifiziert**: 5 Seiten Desktop + 3 Mobile, kein Overflow, Header 82px überall, keine JS-/HTTP-Fehler
 - **Commit `f383408`** gepusht
 
+## State-of-the-Art Medien & UI (WebP/WebM/SVG)
+- **Alle 136 Produktbilder → WebP** (800×800, qualität 82): 35% kleiner (9136KB→5927KB), WordPress-Attachments auf image/webp umgestellt (Dateien ersetzt, Metadata 800×800, alte JPGs gelöscht)
+- **Hero-Video → WebM (VP9)** zusätzlich: `<source type="video/webm">` zuerst, MP4 als Fallback; WebM 1,3MB bei 1280px
+- **Mobile-Bottom-Bar: Emojis → SVG-Icons** (5 professionelle Line-Icons: Home/Shop/Cart/Heart/User), aktiver Tab mit Orange-Akzent-Balken
+- **Suche modernisiert**: SVG-Suchicon im Feld + SVG im Button (statt 🔍-Emoji), größere Leiste (400px), Gradient-Button
+- **Filter/Sortierung**: Kategorie-Pills als moderne Filter-Leiste (weiß, Rahmen, Hover-Orange, aktive Grün), Sortierungs-Dropdown sauber gestylt
+- **Verifiziert**: 16 WebP/0 JPG im Shop, WebM+MP4 im Video, 5 SVG/0 Emoji Mobile-Bar, Desktop+Mobile kein Overflow, keine Fehler
+- **Commit `053b407`** gepusht
+
 ## Wichtige Hosting-Limits
 - `fopen`/Filesystem-Funktionen blockiert → PHP-Skripte fatal-error, wenn sie Dateien via fopen lesen; `file_get_contents`/`file_put_contents` auf Theme-Dateien funktionieren (→ Theme-Edits per FTP-Download/Edit/Upload)- FTP-Upload limitiert (~20MB Dateigrößen schlagen fehl) → große Zips via PHP `download_url()` vom Server holen lassen oder direkt von wordpress.org
 - Complianz-Cookie-Plugin crasht die Seite (Fatal Error) → gelöscht; stattdessen eigenes DSGVO-Cookie-Banner ins Theme eingebaut (`assets/js/cookie-banner.js` + `assets/css/cookie-banner.css`)
