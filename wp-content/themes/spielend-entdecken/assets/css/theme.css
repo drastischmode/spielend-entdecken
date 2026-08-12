@@ -2,13 +2,26 @@
 
 :root {
   --se-primary: #FF6B35;
+  --se-primary-hover: #E85D04;
   --se-secondary: #2B7A62;
+  --se-secondary-hover: #1B5A42;
   --se-accent: #F9C80E;
-  --se-bg: #FAFAF8;
-  --se-text: #2D2D2D;
+  --se-bg: #FDF2E9;
+  --se-bg-alt: #FFFAF5;
+  --se-text: #44403C;
+  --se-text-light: #78716C;
+  --se-text-muted: #A8A29E;
   --se-white: #FFFFFF;
-  --se-radius: 12px;
-  --se-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --se-surface: #FFFFFF;
+  --se-radius: 20px;
+  --se-radius-sm: 12px;
+  --se-radius-full: 9999px;
+  --se-shadow: 0 1px 3px rgba(68,64,60,.08), 0 4px 12px rgba(68,64,60,.05);
+  --se-shadow-lg: 0 4px 16px rgba(68,64,60,.10), 0 12px 32px rgba(68,64,60,.06);
+  --se-shadow-hover: 0 8px 28px rgba(255,107,53,.14);
+  --se-font-heading: 'Fredoka', system-ui, sans-serif;
+  --se-font-body: 'Inter', system-ui, sans-serif;
+  --se-transition: 200ms cubic-bezier(.4,0,.2,1);
 }
 
 body {
@@ -31,28 +44,32 @@ a:hover {
   color: var(--se-secondary);
 }
 
-.wp-element-button, .button {
-  border-radius: 50px !important;
+.wp-element-button, .button, .wp-block-button__link {
+  border-radius: var(--se-radius-full) !important;
   font-weight: 600 !important;
-  transition: all 0.3s ease !important;
+  font-size: .92rem !important;
+  padding: 12px 24px !important;
+  transition: transform var(--se-transition), box-shadow var(--se-transition) !important;
   cursor: pointer;
+  line-height: 1.4 !important;
 }
 .wp-element-button:hover, .button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: var(--se-shadow-hover);
 }
 
-/* Product Cards */
-.se-product-card, .product {
-  background: var(--se-white);
+/* Product Cards — warm, soft, inviting */
+.se-product-card, .product, li.product {
+  background: var(--se-surface);
   border-radius: var(--se-radius);
   box-shadow: var(--se-shadow);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--se-transition), box-shadow var(--se-transition);
+  border: 1px solid rgba(120,113,108,.10);
 }
-.se-product-card:hover, .product:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+.se-product-card:hover, .product:hover, li.product:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--se-shadow-hover);
 }
 
 /* Breadcrumb */
@@ -124,19 +141,19 @@ a:hover {
   padding: 0;
 }
 .se-hero-badge {
-  background: rgba(26,26,46,.78);
-  border: 1px solid rgba(255,255,255,.25);
-  border-radius: 9999px;
-  padding: 8px 18px;
+  background: rgba(68,64,60,.72);
+  border: 1px solid rgba(255,255,255,.20);
+  border-radius: var(--se-radius-full);
+  padding: 10px 20px;
   font-size: .92rem;
   font-weight: 600;
   color: #fff;
-  backdrop-filter: blur(4px);
-  transition: transform .2s ease, background .2s ease;
+  backdrop-filter: blur(8px);
+  transition: transform var(--se-transition), background var(--se-transition);
 }
 .se-hero-badge:hover {
   transform: translateY(-2px);
-  background: rgba(26,26,46,.9);
+  background: rgba(68,64,60,.88);
 }
 .se-hero-badge a {
   color: #fff;
@@ -254,17 +271,17 @@ body.admin-bar .se-header { top: 32px; }
   padding: 0 20px;
 }
 .se-usp-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 28px 22px;
+  background: var(--se-surface);
+  border-radius: var(--se-radius);
+  padding: 32px 22px;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,.06);
-  border: 1px solid #f0f0f0;
-  transition: transform .3s ease, box-shadow .3s ease;
+  box-shadow: var(--se-shadow);
+  border: 1px solid rgba(120,113,108,.10);
+  transition: transform var(--se-transition), box-shadow var(--se-transition);
 }
 .se-usp-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 32px rgba(255,107,53,.14);
+  box-shadow: var(--se-shadow-hover);
 }
 .se-usp-icon {
   font-size: 2.4rem;
@@ -274,11 +291,11 @@ body.admin-bar .se-header { top: 32px; }
 .se-usp-card h3 {
   font-size: 1.1rem;
   margin: 0 0 8px;
-  color: var(--se-secondary, #2B7A62);
+  color: var(--se-secondary);
 }
 .se-usp-card p {
   font-size: .9rem;
-  color: #666;
+  color: var(--se-text-light);
   margin: 0;
   line-height: 1.5;
 }
@@ -290,24 +307,24 @@ body.admin-bar .se-header { top: 32px; }
   padding: 0 20px;
 }
 .se-faq-item {
-  background: #fff;
-  border: 1px solid #ececec;
-  border-radius: 12px;
+  background: var(--se-surface);
+  border: 1px solid rgba(120,113,108,.12);
+  border-radius: var(--se-radius-sm);
   margin-bottom: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  box-shadow: var(--se-shadow);
 }
 .se-faq-item summary {
   cursor: pointer;
-  padding: 16px 20px;
+  padding: 18px 22px;
   font-weight: 600;
   font-size: .98rem;
-  color: #1a1a2e;
+  color: var(--se-text);
   list-style: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: background .2s;
+  transition: background var(--se-transition);
 }
 .se-faq-item summary::-webkit-details-marker { display: none; }
 .se-faq-item summary::after {
@@ -318,15 +335,15 @@ body.admin-bar .se-header { top: 32px; }
   transition: transform .3s;
 }
 .se-faq-item[open] summary::after { transform: rotate(45deg); }
-.se-faq-item summary:hover { background: #fff8f0; }
+.se-faq-item summary:hover { background: var(--se-bg); }
 .se-faq-item p {
-  padding: 0 20px 16px;
+  padding: 0 22px 18px;
   margin: 0;
   font-size: .92rem;
-  color: #555;
-  line-height: 1.6;
+  color: var(--se-text-light);
+  line-height: 1.65;
 }
-.se-faq-item a { color: var(--se-primary, #FF6B35); }
+.se-faq-item a { color: var(--se-primary); }
 
 @media (max-width: 900px) {
   .se-usp-grid { grid-template-columns: repeat(2, 1fr); }
@@ -530,25 +547,26 @@ body.admin-bar .se-header { top: 32px; }
 
 /* Blog-Teaser auf Startseite */
 .se-blog-teaser-card {
-  background: #fff;
-  box-shadow: 0 4px 20px rgba(0,0,0,.06);
+  background: var(--se-surface);
+  box-shadow: var(--se-shadow);
   padding: 14px !important;
-  border: 1px solid #f0f0f0;
-  transition: transform .3s ease, box-shadow .3s ease;
+  border: 1px solid rgba(120,113,108,.10);
+  transition: transform var(--se-transition), box-shadow var(--se-transition);
+  border-radius: var(--se-radius-sm);
 }
 .se-blog-teaser-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 32px rgba(255,107,53,.12);
+  box-shadow: var(--se-shadow-hover);
 }
 .se-blog-teaser-card .wp-block-post-title a {
-  color: #1a1a2e;
+  color: var(--se-text);
   text-decoration: none;
 }
 .se-blog-teaser-card .wp-block-post-title a:hover {
-  color: var(--se-primary, #FF6B35);
+  color: var(--se-primary);
 }
 .se-blog-teaser-card .wp-block-post-date {
-  color: #888;
+  color: var(--se-text-muted);
 }
 
 /* Add-to-Cart-Button in Orange (Branding) */
@@ -677,7 +695,7 @@ li.product h2, li.product h3 {
 
 /* Kategorie-Titel: dunkel und kräftig */
 .spielend-category-grid__title {
-  color: #1A1A2E !important;
+  color: var(--se-text) !important;
   font-weight: 600;
 }
 
@@ -702,10 +720,6 @@ header .wp-block-navigation a:hover {
 }
 
 /* Fließtext kräftiger */
-body {
-  color: #1A1A2E;
-}
-
 /* Hervorgehobene Produkte (Beliebte Produkte) */
 .se-featured-grid {
   display: grid;
@@ -718,17 +732,17 @@ body {
 .se-prod-card {
   display: flex;
   flex-direction: column;
-  background: #fff;
-  border-radius: 18px;
+  background: var(--se-surface);
+  border-radius: var(--se-radius);
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,.07);
+  box-shadow: var(--se-shadow);
   text-decoration: none;
-  transition: transform .3s ease, box-shadow .3s ease;
-  border: 1px solid #f0f0f0;
+  transition: transform var(--se-transition), box-shadow var(--se-transition);
+  border: 1px solid rgba(120,113,108,.10);
 }
 .se-prod-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 36px rgba(255,107,53,.14);
+  box-shadow: var(--se-shadow-hover);
 }
 .se-prod-card__img {
   aspect-ratio: 1/1;
@@ -749,7 +763,7 @@ body {
   padding: 14px 16px 4px;
   font-size: .98rem;
   font-weight: 600;
-  color: #1A1A2E;
+  color: var(--se-text);
   line-height: 1.35;
   min-height: 3.6em;
   display: -webkit-box;
@@ -792,10 +806,11 @@ body {
 /* Section-Subtitles (Design-Hierarchie) */
 .se-section-sub {
   max-width: 560px;
-  margin: -6px auto 0 !important;
-  color: #6B7280 !important;
+  margin: -4px auto 0 !important;
+  color: var(--se-text-light) !important;
   font-size: 1.05rem !important;
   line-height: 1.6;
+  font-family: var(--se-font-body);
 }
 
 /* Konsistente Section-Überschriften */
@@ -1011,4 +1026,93 @@ main .product_title,
 .woocommerce .woocommerce-ordering select:focus,
 .orderby:focus {
   border-color: var(--se-primary, #FF6B35);
+}
+
+/* Warm Design System — Finishing Touches */
+
+/* QuickNav Filter-Pills — warm, soft */
+.se-qnav-item {
+  background: var(--se-bg-alt);
+  border: 1px solid rgba(120,113,108,.12);
+  color: var(--se-text-light);
+  font-weight: 500;
+  font-size: .88rem;
+  padding: 10px 20px;
+  border-radius: var(--se-radius-full);
+  transition: all var(--se-transition);
+}
+.se-qnav-item:hover {
+  border-color: var(--se-primary);
+  color: var(--se-primary);
+  background: #FFF5F0;
+}
+.se-qnav-item.is-current {
+  background: var(--se-secondary);
+  border-color: var(--se-secondary);
+  color: #fff;
+}
+
+/* Kategorie-Grid Platzhalter — warm */
+.spielend-category-grid__card {
+  border-radius: var(--se-radius) !important;
+  box-shadow: var(--se-shadow) !important;
+  transition: transform var(--se-transition), box-shadow var(--se-transition) !important;
+  background: var(--se-surface) !important;
+}
+.spielend-category-grid__card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: var(--se-shadow-hover) !important;
+}
+.spielend-category-grid__title {
+  color: var(--se-text) !important;
+}
+.spielend-category-grid__count {
+  color: var(--se-text-muted) !important;
+}
+
+/* Footer auf Warm-Design aktualisiert */
+footer.wp-block-group {
+  background-color: #2D2D2D !important;
+}
+footer h3.wp-block-heading {
+  font-size: .85rem !important;
+  opacity: .8;
+  letter-spacing: .05em;
+}
+
+/* Newsletter-Section (Secondary-Background) warm tinten */
+.has-secondary-background-color {
+  background-color: var(--se-secondary) !important;
+}
+
+/* Breadcrumb warm */
+.se-breadcrumb a {
+  color: var(--se-text-light);
+}
+.se-breadcrumb a:hover {
+  color: var(--se-primary);
+}
+.se-breadcrumb span {
+  color: var(--se-text-muted);
+}
+
+/* Whishlist-Button warm */
+.spielend-wishlist-btn {
+  border: 1px solid rgba(120,113,108,.18);
+  color: var(--se-text-light);
+  border-radius: var(--se-radius-full);
+}
+.spielend-wishlist-btn:hover {
+  border-color: var(--se-primary);
+  color: var(--se-primary);
+}
+.spielend-wishlist-btn.is-active {
+  border-color: var(--se-primary);
+  background: #FFF5F0;
+  color: var(--se-primary);
+}
+
+/* Section-Heading mit Wärme */
+.wp-block-group h2.wp-block-heading {
+  color: var(--se-text);
 }

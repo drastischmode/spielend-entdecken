@@ -9,12 +9,13 @@
     },
     "color": {
       "palette": [
-        { "slug": "primary", "color": "#FF6B35", "name": "Primary Orange" },
-        { "slug": "secondary", "color": "#2B7A62", "name": "Secondary Green" },
-        { "slug": "accent", "color": "#F9C80E", "name": "Accent Yellow" },
-        { "slug": "background", "color": "#FAFAF8", "name": "Background Warm" },
-        { "slug": "foreground", "color": "#2D2D2D", "name": "Text Dark" },
-        { "slug": "base", "color": "#FFFFFF", "name": "White" }
+        { "slug": "primary", "color": "#FF6B35", "name": "Warm Orange" },
+        { "slug": "secondary", "color": "#2B7A62", "name": "Sage Green" },
+        { "slug": "accent", "color": "#F9C80E", "name": "Soft Yellow" },
+        { "slug": "background", "color": "#FDF2E9", "name": "Warm Cream" },
+        { "slug": "base", "color": "#FFFAF5", "name": "Warm White" },
+        { "slug": "foreground", "color": "#44403C", "name": "Warm Stone" },
+        { "slug": "surface", "color": "#FFFFFF", "name": "Card White" }
       ],
       "link": true,
       "gradients": [
