@@ -255,3 +255,7 @@ require_once get_template_directory() . '/patterns/additional-patterns.php';
 require_once get_template_directory() . '/inc/acf-fields.php';
 require_once get_template_directory() . '/inc/schema.php';
 require_once get_template_directory() . '/inc/critical-css.php';
+require_once get_template_directory() . '/inc/bulk-meta-tool.php';
+require_once get_template_directory() . '/inc/api-bulk-meta.php';
+require_once get_template_directory() . '/inc/init-bulk-meta.php';
+require_once get_template_directory() . '/inc/image-optimization.php';
