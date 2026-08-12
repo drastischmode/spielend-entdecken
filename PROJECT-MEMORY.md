@@ -43,6 +43,16 @@ cv = AES.new(bytes.fromhex(m[0]), AES.MODE_CBC, bytes.fromhex(m[1])).decrypt(byt
 - Checkout verifiziert: MwSt. sichtbar, 3 Zahlungsmethoden (bacs/cod/paypal) + Place-Order
 - WICHTIG für Umzug: WooCommerce 9.1.4 (9.3+ crasht Freehost), wp-content/languages/plugins/woocommerce-de_DE.* mitnehmen, Anti-Bot blockt REST auf Freehost (AJAX nur server-seitig; auf Vollhost normal)
 
+## Design-Overhaul (Runde: "noch lange nicht high quality")
+- **Section-Rhythmik behoben**: vorher 6 aufeinanderfolgende weiße Sektionen (eintönig) → jetzt abwechselnd Weiß (#FFF) / Creme (#FAFAF8) / Weiß / Creme / Weiß / Grün (Newsletter) / Dunkel (Footer)
+- **Section-Subtitles** eingeführt (`.se-section-sub`): kurze Beschreibungszeile unter jeder H2 für Design-Hierarchie (Kategorien/Beliebte/USP/Blog)
+- **Typografie-Skala**: H1 Seiten-Titel `clamp(1.8rem,4vw,2.6rem)` + margin-bottom 24px (vorher klebte "Shop"-H1 am Breadcrumb); Section-H2 letter-spacing -0.01em, weight 700
+- **KRITISCHES Mobile-Problem**: Header war 278px hoch (Logo+Nav+Suche+Cart gestapelt) → Desktop-Navigation auf <768px ausgeblendet (Mobile-Bottom-Bar übernimmt!), Header als Grid `1fr auto`, Logo 100px → **82px** Header
+- Hero: Vollhöhe `calc(100vh - 130px)`, besseres 3-Stufen-Dark-Overlay (35%→55%→72%), Mobile-Titel clamp(1.9-2.6rem)
+- Karten-Schatten vereinheitlicht, Footer-H3 als Uppercase-Labels
+- **Verifiziert**: 5 Seiten Desktop + 3 Mobile, kein Overflow, Header 82px überall, keine JS-/HTTP-Fehler
+- **Commit `f383408`** gepusht
+
 ## Wichtige Hosting-Limits
 - `fopen`/Filesystem-Funktionen blockiert → PHP-Skripte fatal-error, wenn sie Dateien via fopen lesen; `file_get_contents`/`file_put_contents` auf Theme-Dateien funktionieren (→ Theme-Edits per FTP-Download/Edit/Upload)- FTP-Upload limitiert (~20MB Dateigrößen schlagen fehl) → große Zips via PHP `download_url()` vom Server holen lassen oder direkt von wordpress.org
 - Complianz-Cookie-Plugin crasht die Seite (Fatal Error) → gelöscht; stattdessen eigenes DSGVO-Cookie-Banner ins Theme eingebaut (`assets/js/cookie-banner.js` + `assets/css/cookie-banner.css`)
