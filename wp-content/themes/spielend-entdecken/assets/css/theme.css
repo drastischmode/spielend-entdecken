@@ -1566,6 +1566,7 @@ header.se-header[style*="padding"] {
     font-size: 0.8rem;
     padding: 6px 8px;
   }
+}
 
 /* Mobile Navigation Toggle */
 @media (max-width: 768px) {
