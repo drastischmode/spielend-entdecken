@@ -293,3 +293,24 @@ require_once get_template_directory() . '/inc/api-bulk-meta.php';
 require_once get_template_directory() . '/inc/ajax-handlers.php';
 require_once get_template_directory() . '/inc/security-hardening.php';
 require_once get_template_directory() . '/inc/image-optimization.php';
+
+/** ============================================
+ * FOOTER TRUST BADGES (via wp_footer, umgeht synced-pattern-Cache)
+ * ============================================ */
+function se_footer_trust_badges() {
+    // Nur im Footer-Bereich rendern (Anker #footer-content oder Ende)
+    $out = '<div class="footer-trust">';
+    $badges = array(
+        array('icon' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>', 'label' => 'Seit 1902'),
+        array('icon' => '<path d="M5 18h14"/><path d="M3 6h11v9H3z"/><path d="M14 6h3v9h-3z"/>', 'label' => 'Kostenloser Versand ab 50 €'),
+        array('icon' => '<path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2z"/><path d="M10 13l2 2 4-4"/>', 'label' => '14 Tage Widerruf'),
+        array('icon' => '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>', 'label' => 'Persönliche Beratung'),
+    );
+    foreach ($badges as $b) {
+        $out .= '<span class="footer-trust-badge"><svg class="footer-trust-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $b['icon'] . '</svg>' . esc_html($b['label']) . '</span>';
+    }
+    $out .= '</div>';
+    // Direkt vor dem Footer-Bottom einfügen (nach dem Footer-Inhalt)
+    echo $out;
+}
+add_action('wp_footer', 'se_footer_trust_badges', 999);
