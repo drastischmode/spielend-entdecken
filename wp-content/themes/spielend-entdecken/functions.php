@@ -162,6 +162,7 @@ function se_hero_shortcode() {
     // Trust badges: jede Zeile "Text|Link" (Link optional) ODER "Text||Text||..."
     $badges_raw = spielend_opt('spielend_hero_badges', '');
     $badges = array();
+    // Support both newline-separated and ||-separated entries
     $badges_raw = str_replace('||', "\n", $badges_raw);
     foreach (preg_split('/\r\n|\r|\n/', $badges_raw) as $line) {
         $line = trim($line);
