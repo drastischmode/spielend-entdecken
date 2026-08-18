@@ -162,7 +162,6 @@ function se_hero_shortcode() {
     // Trust badges: jede Zeile "Text|Link" (Link optional) ODER "Text||Text||..."
     $badges_raw = spielend_opt('spielend_hero_badges', '');
     $badges = array();
-    // Support both newline-separated and ||-separated entries
     $badges_raw = str_replace('||', "\n", $badges_raw);
     foreach (preg_split('/\r\n|\r|\n/', $badges_raw) as $line) {
         $line = trim($line);
@@ -178,9 +177,23 @@ function se_hero_shortcode() {
         );
     }
 
+    // Hero eyebrow (optional)
+    $eyebrow = spielend_opt('spielend_hero_eyebrow', 'Ihr Spielwarenladen am Niederrhein');
+
+    // Trust indicators
+    $trust_items = array(
+        array('value' => '120+', 'label' => 'Jahre Erfahrung'),
+        array('value' => '130+', 'label' => 'Produkte'),
+        array('value' => '50€', 'label' => 'Gratis Versand ab'),
+        array('value' => '180m²', 'label' => 'Ladenfläche'),
+    );
+
+    // Floating toys
+    $float_toys = array('🧸', '🧩', '🎨', '🎲');
+
     ob_start();
     ?>
-<div class="wp-block-cover alignfull se-hero" style="min-height:500px;">
+<div class="wp-block-cover alignfull se-hero" style="min-height:calc(100vh - 72px);">
     <span aria-hidden="true" class="wp-block-cover__background has-background-dim has-background-dim-60 has-background-gradient has-spielend-hero-gradient-background"></span>
     <?php if ($video) : ?>
     <video class="se-hero-video" autoplay muted loop playsinline preload="metadata"<?php echo $poster ? ' poster="' . esc_url($poster) . '"' : ''; ?>>
@@ -188,25 +201,34 @@ function se_hero_shortcode() {
         <source src="<?php echo esc_url($video); ?>" type="video/mp4">
     </video>
     <?php endif; ?>
+    
+    <!-- Floating toy elements -->
     <div class="se-hero-toys" aria-hidden="true">
-        <span class="se-hero-toy se-hero-toy--1">🧸</span>
-        <span class="se-hero-toy se-hero-toy--2">🧩</span>
-        <span class="se-hero-toy se-hero-toy--3">🎨</span>
-        <span class="se-hero-toy se-hero-toy--4">🎲</span>
+        <?php foreach ($float_toys as $index => $toy) : ?>
+        <span class="se-hero__float se-hero__float--<?php echo $index + 1; ?>"><?php echo esc_html($toy); ?></span>
+        <?php endforeach; ?>
     </div>
-    <div class="wp-block-cover__inner-container se-hero-content">
+
+    <div class="wp-block-cover__inner-container se-hero__content">
+        <?php if ($eyebrow) : ?>
+        <span class="se-hero__eyebrow"><?php echo esc_html($eyebrow); ?></span>
+        <?php endif; ?>
+        
         <h1 class="wp-block-heading has-text-align-center has-base-color has-text-color se-hero-title"><?php echo esc_html($title); ?></h1>
+        
         <?php if ($subtitle) : ?>
         <p class="has-text-align-center has-base-color has-text-color se-hero-subtitle"><?php echo esc_html($subtitle); ?></p>
         <?php endif; ?>
-        <div class="wp-block-buttons is-content-justification-center se-hero-buttons">
-            <div class="wp-block-button"><a class="wp-block-button__link has-foreground-color has-accent-background-color has-text-color has-background wp-element-button" href="<?php echo esc_url($cta_url); ?>"><?php echo esc_html($cta_text); ?></a></div>
+        
+        <div class="wp-block-buttons is-content-justification-center se-hero__actions">
+            <div class="wp-block-button"><a class="wp-block-button__link has-foreground-color has-accent-background-color has-text-color has-background wp-element-button btn btn--primary btn--lg" href="<?php echo esc_url($cta_url); ?>"><?php echo esc_html($cta_text); ?></a></div>
             <?php if ($cta2_text && $cta2_url) : ?>
-            <div class="wp-block-button is-style-outline"><a class="wp-block-button__link has-base-color has-text-color wp-element-button" href="<?php echo esc_url($cta2_url); ?>"><?php echo esc_html($cta2_text); ?></a></div>
+            <div class="wp-block-button is-style-outline"><a class="wp-block-button__link has-base-color has-text-color wp-element-button btn btn--outline btn--lg" href="<?php echo esc_url($cta2_url); ?>"><?php echo esc_html($cta2_text); ?></a></div>
             <?php endif; ?>
         </div>
+        
         <?php if (!empty($badges)) : ?>
-        <ul class="se-hero-badges" style="display:flex;flex-wrap:nowrap;justify-content:center;gap:1rem;margin-top:2rem;list-style:none;overflow-x:auto;scrollbar-width:none;padding-bottom:0.5rem;margin-left:-1rem;margin-right:-1rem;padding-left:1rem;padding-right:1rem;">
+        <ul class="se-hero-badges" style="display:flex;flex-wrap:nowrap;justify-content:center;gap:var(--space-3);margin-top:var(--space-10);list-style:none;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding:var(--space-2) var(--space-4);margin-left:calc(-1 * var(--space-4));margin-right:calc(-1 * var(--space-4));padding-left:var(--space-4);padding-right:var(--space-4);">
             <?php foreach ($badges as $b) : ?>
             <?php $badge_html = se_render_badge_with_counter($b['text']); ?>
             <li class="se-hero-badge" style="flex-shrink:0;white-space:nowrap;">
@@ -219,6 +241,16 @@ function se_hero_shortcode() {
             <?php endforeach; ?>
         </ul>
         <?php endif; ?>
+        
+        <!-- Trust Indicators -->
+        <div class="se-hero__trust">
+            <?php foreach ($trust_items as $item) : ?>
+            <div class="se-hero__trust-item">
+                <span class="se-hero__trust-value"><?php echo esc_html($item['value']); ?></span>
+                <span><?php echo esc_html($item['label']); ?></span>
+            </div>
+            <?php endforeach; ?>
+        </div>
     </div>
 </div>
     <?php
