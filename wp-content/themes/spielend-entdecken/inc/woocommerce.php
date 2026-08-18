@@ -78,13 +78,50 @@ add_action('wp_body_open', 'se_shop_breadcrumb_body_open', 5);
 /** Kategorie-Schnellauswahl über dem Produkt-Grid */
 function se_category_quick_nav() {
     if (!is_shop() && !is_product_category()) return;
-    $cats = get_terms(array('taxonomy' => 'product_cat', 'hide_empty' => true, 'number' => 12, 'orderby' => 'count', 'order' => 'DESC'));
+
+    // Kuratierte Reihenfolge: Shop-Welten zuerst, Sonderangebote am Ende.
+    // Nicht gelistete Kategorien werden nach Produktanzahl angehängt (max 12).
+    $priority = array(
+        'tonies',
+        'lego',
+        'brettspiele',
+        'kartenspiele',
+        'baby-kleinkind',
+        'edurino',
+        'wichtelwelt',
+        'hobby-horsing',
+        'dies-das',
+        'geschenkideen-fuer-erwachsene',
+        'giessen-mit-keraflott',
+        'sonderangebote',
+    );
+
+    $cats = get_terms(array('taxonomy' => 'product_cat', 'hide_empty' => true));
     if (is_wp_error($cats) || empty($cats)) return;
 
-    $current = is_product_category() ? get_queried_object_id() : 0;
-    $items = array('<a href="' . esc_url(get_permalink(wc_get_page_id('shop'))) . '" class="se-qnav-item' . (is_shop() ? ' is-current' : '') . '">Alle</a>');
+    $by_slug = array();
     foreach ($cats as $cat) {
-        $items[] = '<a href="' . esc_url(get_term_link($cat)) . '" class="se-qnav-item' . ($cat->term_id === $current ? ' is-current' : '') . '">' . esc_html($cat->name) . '</a>';
+        $by_slug[$cat->slug] = $cat;
+    }
+
+    $ordered = array();
+    foreach ($priority as $slug) {
+        if (isset($by_slug[$slug])) {
+            $ordered[] = $by_slug[$slug];
+            unset($by_slug[$slug]);
+        }
+    }
+    $rest = array_values($by_slug);
+    usort($rest, function ($a, $b) {
+        return $b->count - $a->count;
+    });
+    $ordered = array_merge($ordered, $rest);
+    $ordered = array_slice($ordered, 0, 12);
+
+    $current = is_product_category() ? get_queried_object_id() : 0;
+    $items = array('<a href="' . esc_url(get_permalink(wc_get_page_id('shop'))) . '" class="se-qnav-item' . (is_shop() ? ' is-current' : '') . '"' . (is_shop() ? ' aria-current="page"' : '') . '>Alle</a>');
+    foreach ($ordered as $cat) {
+        $items[] = '<a href="' . esc_url(get_term_link($cat)) . '" class="se-qnav-item' . ($cat->term_id === $current ? ' is-current' : '') . '"' . ($cat->term_id === $current ? ' aria-current="page"' : '') . '>' . esc_html($cat->name) . '</a>';
     }
     echo '<div class="se-category-quicknav" role="navigation" aria-label="Kategorien">' . implode('', $items) . '</div>';
 }

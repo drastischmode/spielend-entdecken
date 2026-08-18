@@ -79,28 +79,56 @@
         $$('.se-nav a').forEach(a => a.addEventListener('click', closeNav));
     }
 
-    // ============================================
-    // STICKY HEADER
-    // ============================================
-    function initStickyHeader() {
-        const header = $('.se-header');
-        if (!header) return;
-
-        let lastScroll = 0;
-        const threshold = 100;
-
-        window.addEventListener('scroll', throttle(() => {
-            const currentScroll = window.pageYOffset;
-
-            if (currentScroll > threshold) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+// ============================================
+// STICKY HEADER & MOBILE NAVIGATION
+// ============================================
+function initStickyHeader() {
+    const header = $('.se-header');
+    if (!header) return;
+    
+    // Mobile Navigation Toggle
+    const navToggle = $('.nav-toggle', header);
+    const mobileNav = $('.mobile-nav', header);
+    
+    if (navToggle && mobileNav) {
+        navToggle.addEventListener('click', () => {
+            mobileNav.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', mobileNav.classList.contains('active'));
+        });
+        
+        // Close mobile nav when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !navToggle.contains(e.target)) {
+                mobileNav.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
             }
-
-            lastScroll = currentScroll;
-        }, 16));
+        });
     }
+    
+    let lastScroll = 0;
+    const scrollThreshold = 5;
+    
+    window.addEventListener('scroll', debounce(() => {
+        const currentScroll = window.scrollY;
+        
+        if (currentScroll <= 0) {
+            header.classList.remove('scrolled');
+            return;
+        }
+        
+        if (currentScroll > lastScroll && currentScroll > scrollThreshold) {
+            // Scrolling down
+            if (!header.classList.contains('scrolled')) {
+                header.classList.add('scrolled');
+            }
+        } else if (currentScroll < lastScroll) {
+            // Scrolling up
+            header.classList.remove('scrolled');
+        }
+        
+        lastScroll = currentScroll;
+    }, 10));
+}
 
     // ============================================
     // SEARCH AUTOCOMPLETE
@@ -560,6 +588,30 @@
     }
 
     // ============================================
+    // SCROLL ANIMATIONS
+    // ============================================
+    function initScrollAnimations() {
+        const animatedElements = $$('[data-scroll-animate]');
+        if (!animatedElements.length) return;
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        animatedElements.forEach(el => {
+            observer.observe(el);
+        });
+    }
+
+    // ============================================
     // INITIALIZATION
     // ============================================
     function init() {
@@ -575,6 +627,7 @@
         initAjaxAddToCart();
         initQuickView();
         initProductGallery();
+        initScrollAnimations();
         initQuantityControls();
         initSmoothScroll();
         initScrollAnimations();

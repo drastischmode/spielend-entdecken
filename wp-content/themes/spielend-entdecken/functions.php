@@ -27,18 +27,20 @@ add_action('after_setup_theme', 'se_setup');
 
 function se_enqueue_assets() {
     $template_uri = get_template_directory_uri();
-    wp_enqueue_style('se-fonts', $template_uri . '/assets/css/fonts.css', [], SE_THEME_VERSION);
-    wp_enqueue_style('se-theme', $template_uri . '/assets/css/theme.css', ['se-fonts'], SE_THEME_VERSION);
-    wp_enqueue_style('se-cookie-banner', $template_uri . '/assets/cookie-banner.css', [], SE_THEME_VERSION);
-    wp_enqueue_script('se-cookie-banner', $template_uri . '/assets/cookie-banner.js', [], SE_THEME_VERSION, true);
-    wp_enqueue_style('se-whatsapp', $template_uri . '/assets/css/whatsapp.css', [], SE_THEME_VERSION);
-    wp_enqueue_script('se-whatsapp', $template_uri . '/assets/js/whatsapp.js', [], SE_THEME_VERSION, true);
-    wp_enqueue_style('se-search', $template_uri . '/assets/css/search.css', [], SE_THEME_VERSION);
-    wp_enqueue_style('se-animations', $template_uri . '/assets/css/animations.css', [], SE_THEME_VERSION);
-    wp_enqueue_script('se-animations', $template_uri . '/assets/js/animations.js', [], SE_THEME_VERSION, true);
-    wp_enqueue_script('se-main', $template_uri . '/assets/js/main.js', [], SE_THEME_VERSION, true);
-    wp_enqueue_script('se-wc-translate', $template_uri . '/assets/js/wc-translate.js', [], SE_THEME_VERSION, true);
-    wp_enqueue_script('se-newsletter', $template_uri . '/assets/js/newsletter.js', [], SE_THEME_VERSION, true);
+    $cache_buster = SE_THEME_VERSION . '.' . filemtime(get_template_directory() . '/assets/css/theme.css');
+    
+    wp_enqueue_style('se-fonts', $template_uri . '/assets/css/fonts.css', [], $cache_buster);
+    wp_enqueue_style('se-theme', $template_uri . '/assets/css/theme.css', ['se-fonts'], $cache_buster);
+    wp_enqueue_style('se-cookie-banner', $template_uri . '/assets/cookie-banner.css', [], $cache_buster);
+    wp_enqueue_script('se-cookie-banner', $template_uri . '/assets/cookie-banner.js', [], $cache_buster, true);
+    wp_enqueue_style('se-whatsapp', $template_uri . '/assets/css/whatsapp.css', [], $cache_buster);
+    wp_enqueue_script('se-whatsapp', $template_uri . '/assets/js/whatsapp.js', [], $cache_buster, true);
+    wp_enqueue_style('se-search', $template_uri . '/assets/css/search.css', [], $cache_buster);
+    wp_enqueue_style('se-animations', $template_uri . '/assets/css/animations.css', [], $cache_buster);
+    wp_enqueue_script('se-animations', $template_uri . '/assets/js/animations.js', [], $cache_buster, true);
+    wp_enqueue_script('se-main', $template_uri . '/assets/js/main.js', [], $cache_buster, true);
+    wp_enqueue_script('se-wc-translate', $template_uri . '/assets/js/wc-translate.js', [], $cache_buster, true);
+    wp_enqueue_script('se-newsletter', $template_uri . '/assets/js/newsletter.js', [], $cache_buster, true);
 }
 add_action('wp_enqueue_scripts', 'se_enqueue_assets');
 
@@ -60,6 +62,11 @@ function se_security_headers() {
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
     header('X-XSS-Protection: 1; mode=block');
+    if (function_exists('is_page') && is_page('kontakt')) {
+        header('Cache-Control: no-cache, no-store, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+    }
 }
 add_action('send_headers', 'se_security_headers');
 
@@ -122,6 +129,17 @@ add_action('wp_enqueue_scripts', 'se_optimize_woocommerce_scripts', 99);
 
 require_once get_template_directory() . '/inc/theme-options.php';
 require_once get_template_directory() . '/inc/dashboard-optimized.php';
+
+/** Fallback: Social-Media-URLs falls theme_mods leer sind */
+add_filter('theme_mod_spielend_social_facebook', function($val) {
+    return $val ?: 'https://facebook.com/spielwaren_lessenich';
+});
+add_filter('theme_mod_spielend_social_instagram', function($val) {
+    return $val ?: 'https://instagram.com/spielwaren_lessenich';
+});
+add_filter('theme_mod_spielend_social_tiktok', function($val) {
+    return $val ?: 'https://tiktok.com/@spielwaren_lessenich';
+});
 
 function se_hero_shortcode() {
     $title    = spielend_opt('spielend_hero_title', 'Entdecke die Welt des Spielens');
@@ -188,10 +206,10 @@ function se_hero_shortcode() {
             <?php endif; ?>
         </div>
         <?php if (!empty($badges)) : ?>
-        <ul class="se-hero-badges">
+        <ul class="se-hero-badges" style="display:flex;flex-wrap:nowrap;justify-content:center;gap:1rem;margin-top:2rem;list-style:none;overflow-x:auto;scrollbar-width:none;padding-bottom:0.5rem;margin-left:-1rem;margin-right:-1rem;padding-left:1rem;padding-right:1rem;">
             <?php foreach ($badges as $b) : ?>
             <?php $badge_html = se_render_badge_with_counter($b['text']); ?>
-            <li class="se-hero-badge">
+            <li class="se-hero-badge" style="flex-shrink:0;white-space:nowrap;">
                 <?php if ($b['url']) : ?>
                     <a href="<?php echo esc_url($b['url']); ?>"><?php echo $badge_html; // phpcs:ignore ?></a>
                 <?php else : ?>

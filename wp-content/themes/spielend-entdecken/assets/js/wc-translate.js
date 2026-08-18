@@ -56,6 +56,19 @@
     nodes.forEach(function(tn) {
       var text = tn.textContent;
       var changed = false;
+      // Phrasen zuerst (vor der Wort-Übersetzung)
+      var phrases = {
+        'Showing all': 'Zeige alle',
+        'Showing the single result': 'Zeige ein einzelnes Ergebnis'
+      };
+      Object.keys(phrases).forEach(function(en) {
+        if (text.indexOf(en) !== -1) {
+          text = text.split(en).join(phrases[en]);
+          changed = true;
+        }
+      });
+      // "of 136 results" → Dativ "von 136 Ergebnissen"
+      text = text.replace(/(\bof\b)\s+([\d.,]+)\s+results\b/g, 'von $2 Ergebnissen');
       Object.keys(translations).forEach(function(en) {
         var re = new RegExp('\\b' + en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'g');
         if (re.test(text)) {
@@ -79,6 +92,14 @@
   }
   if (document.body) run();
   document.addEventListener('DOMContentLoaded', run);
+  // Aktive Kategorie-Pill (z.B. auf Kategorie-Seiten) in den sichtbaren Bereich scrollen
+  function scrollActivePill() {
+    var active = document.querySelectorAll('.se-category-quicknav .is-current');
+    for (var i = 0; i < active.length; i++) {
+      active[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+  }
+  document.addEventListener('DOMContentLoaded', scrollActivePill);
   // Nachladen durch WooCommerce-Blöcke abfangen
   setTimeout(run, 1500);
   setTimeout(run, 3000);

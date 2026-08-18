@@ -585,12 +585,7 @@ final class Spielend_Essentials {
 				$img = '<span class="spielend-product-ph" aria-hidden="true"></span>';
 			}
 			$items .= sprintf(
-				'<a class="se-prod-card" href="%1$s">
-					<span class="se-prod-card__img">%2$s</span>
-					<span class="se-prod-card__title">%3$s</span>
-					<span class="se-prod-card__price">%4$s</span>
-					<span class="se-prod-card__btn wp-element-button">%5$s</span>
-				</a>',
+				'<a class="se-prod-card" href="%1$s"><span class="se-prod-card__img">%2$s</span><span class="se-prod-card__title">%3$s</span><span class="se-prod-card__price">%4$s</span><span class="se-prod-card__btn wp-element-button">%5$s</span></a>',
 				esc_url( $product->get_permalink() ),
 				$img,
 				esc_html( $product->get_name() ),
