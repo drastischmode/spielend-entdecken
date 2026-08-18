@@ -1,0 +1,378 @@
+/* ============================================
+   GIFT FINDER WIZARD
+   ============================================ */
+
+.gift-finder {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4);
+}
+
+/* Header & Progress */
+.gift-finder-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+}
+
+.gift-finder-header h2 {
+    font-size: var(--font-size-fluid-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+}
+
+.gift-finder-subtitle {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-fluid-base);
+}
+
+.gift-finder-progress {
+    margin-top: var(--space-6);
+}
+
+.gift-finder-progress__steps {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+}
+
+.gift-finder-progress__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    opacity: 0.4;
+    transition: opacity var(--transition-fast);
+}
+
+.gift-finder-progress__step.active {
+    opacity: 1;
+}
+
+.gift-finder-progress__step span:first-child {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full);
+    background: var(--color-neutral-200);
+    color: var(--color-text-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-fluid-xs);
+    font-weight: var(--font-weight-bold);
+    transition: all var(--transition-fast);
+}
+
+.gift-finder-progress__step.active span:first-child {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+}
+
+.gift-finder-progress__step span:last-child {
+    font-size: var(--font-size-fluid-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-tertiary);
+}
+
+.gift-finder-progress__step.active span:last-child {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.gift-finder-progress__bar {
+    height: 4px;
+    background: var(--color-neutral-200);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.gift-finder-progress__fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    border-radius: var(--radius-full);
+    transition: width 0.4s var(--ease-out);
+    width: 33.33%;
+}
+
+/* Steps */
+.gift-finder-step {
+    animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.gift-finder-step h3 {
+    font-size: var(--font-size-fluid-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    text-align: center;
+}
+
+/* Options Grid */
+.gift-finder-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+}
+
+.gift-finder-option {
+    position: relative;
+}
+
+.gift-finder-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.gift-finder-option__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--space-2);
+    background: var(--color-surface);
+    border: 2px solid var(--color-surface-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-tertiary);
+    transition: all var(--transition-fast);
+}
+
+.gift-finder-option__icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: currentColor;
+}
+
+.gift-finder-option__label {
+    display: block;
+    font-size: var(--font-size-fluid-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    text-align: center;
+    transition: color var(--transition-fast);
+}
+
+.gift-finder-option input:checked + .gift-finder-option__icon {
+    background: var(--color-primary-lighter);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-brand-sm);
+}
+
+.gift-finder-option input:checked + .gift-finder-option__icon + .gift-finder-option__label {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.gift-finder-option:hover .gift-finder-option__icon {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* Actions */
+.gift-finder-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-surface-border);
+}
+
+.gift-finder-actions .btn {
+    flex: 1;
+    max-width: 200px;
+}
+
+/* Results */
+.gift-finder-results {
+    animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+.gift-finder-results__subtitle {
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: var(--space-6);
+}
+
+.gift-finder-results__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-4);
+}
+
+.gift-finder-results__actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-surface-border);
+}
+
+.gift-finder-results__actions .btn {
+    max-width: 300px;
+}
+
+/* Result Card */
+.gift-finder-result {
+    text-decoration: none;
+    color: inherit;
+}
+
+.gift-finder-result__image {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: var(--color-bg-subtle);
+}
+
+.gift-finder-result__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slower) var(--ease-out);
+}
+
+.gift-finder-result:hover .gift-finder-result__image img {
+    transform: scale(1.05);
+}
+
+.gift-finder-result__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(23, 23, 23, 0.6);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.gift-finder-result:hover .gift-finder-result__overlay {
+    opacity: 1;
+}
+
+.gift-finder-result__wishlist,
+.gift-finder-result__quick {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    border: 1px solid var(--color-surface-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-md);
+}
+
+.gift-finder-result__wishlist:hover,
+.gift-finder-result__quick:hover {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    transform: scale(1.1);
+}
+
+.gift-finder-result__content {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.gift-finder-result__why {
+    font-size: var(--font-size-fluid-xs);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-1) var(--space-2);
+    background: var(--color-primary-lighter);
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    margin-bottom: var(--space-2);
+}
+
+.gift-finder-result__title {
+    font-size: var(--font-size-fluid-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    line-height: var(--line-height-snug);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color var(--transition-fast);
+}
+
+.gift-finder-result__title a:hover {
+    color: var(--color-primary);
+}
+
+.gift-finder-result__rating {
+    color: var(--color-accent);
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--space-1);
+}
+
+.gift-finder-result__price {
+    font-size: var(--font-size-fluid-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.gift-finder-result__price .se-prod-card__price-old {
+    color: var(--color-text-tertiary);
+    text-decoration: line-through;
+    font-size: var(--font-size-fluid-sm);
+    font-weight: var(--font-weight-normal);
+}
+
+.gift-finder-results__actions {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-surface-border);
+    text-align: center;
+}
+
+.gift-finder-results__actions .btn {
+    max-width: 300px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gift-finder {
+        padding: var(--space-4) var(--space-3);
+    }
+
+    .gift-finder-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gift-finder-option__icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .gift-finder-option__icon svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gift-finder-options {
+        grid-template-columns: 1fr;
+    }
+}

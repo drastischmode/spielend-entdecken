@@ -44,6 +44,20 @@ function se_enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', 'se_enqueue_assets');
 
+/** Gift Finder: nur laden, wenn der Shortcode auf der Seite vorkommt */
+function se_enqueue_gift_finder() {
+    global $post;
+    if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'spielend_gift_finder')) {
+        wp_enqueue_style('se-gift-finder', get_template_directory_uri() . '/assets/css/gift-finder.css', ['se-theme'], SE_THEME_VERSION);
+        wp_enqueue_script('se-gift-finder', get_template_directory_uri() . '/assets/js/gift-finder.js', [], SE_THEME_VERSION, true);
+        wp_localize_script('se-gift-finder', 'spielend_gift_finder', [
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('spielend_gift_finder_nonce'),
+        ]);
+    }
+}
+add_action('wp_enqueue_scripts', 'se_enqueue_gift_finder');
+
 function se_admin_dashboard_widget() {
     // Altes Widget entfernen, neues (optimiertes) aktivieren
     remove_meta_box('spielend_overview', 'dashboard', 'normal');
@@ -314,3 +328,6 @@ function se_footer_trust_badges() {
     echo $out;
 }
 add_action('wp_footer', 'se_footer_trust_badges', 999);
+
+/** Gift Finder Wizard (Shortcode + AJAX) einbinden */
+require_once get_template_directory() . '/inc/gift-finder.php';
