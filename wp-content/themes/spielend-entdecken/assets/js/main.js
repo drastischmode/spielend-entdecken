@@ -588,6 +588,25 @@ function initStickyHeader() {
     }
 
     // ============================================
+    // SHIPPING NOTICE
+    // ============================================
+    function initShippingNotice() {
+        const notice = $('.se-shipping-notice');
+        const closeBtn = $('.se-shipping-close', notice);
+        
+        if (!notice || !closeBtn) return;
+        
+        closeBtn.addEventListener('click', () => {
+            notice.style.animation = 'slideUp 0.3s var(--ease-in) forwards';
+            setTimeout(() => {
+                notice.remove();
+                // Adjust header position
+                document.body.classList.add('shipping-notice-closed');
+            }, 300);
+        });
+    }
+
+    // ============================================
     // SCROLL ANIMATIONS
     // ============================================
     function initScrollAnimations() {
@@ -633,6 +652,7 @@ function initStickyHeader() {
         initScrollAnimations();
         initFormValidation();
         initWishlist();
+        initShippingNotice();
 
         // Initial mini cart load
         updateMiniCart();

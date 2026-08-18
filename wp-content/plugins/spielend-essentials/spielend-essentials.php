@@ -708,7 +708,7 @@ final class Spielend_Essentials {
       var list = (document.cookie.match(/(?:^|; )spielend_wishlist=([^;]*)/) || [,''])[1];
       var ids = list ? list.split(',').filter(Boolean) : [];
       if (ids.indexOf(id) === -1) ids.push(id);
-      document.cookie = 'spielend_wishlist=' + ids.join(',') + '; path=/; max-age=31536000';
+      document.cookie = 'spielend_wishlist=' + ids.join(',') + '; path=/; max-age=2592000';
       btn.classList.add('is-active');
       btn.textContent = '♥ Auf der Wunschliste';
     }
@@ -717,7 +717,7 @@ final class Spielend_Essentials {
       var id = rm.getAttribute('data-id');
       var list = (document.cookie.match(/(?:^|; )spielend_wishlist=([^;]*)/) || [,''])[1];
       var ids = (list ? list.split(',').filter(Boolean) : []).filter(function(x){ return x !== id; });
-      document.cookie = 'spielend_wishlist=' + ids.join(',') + '; path=/; max-age=31536000';
+      document.cookie = 'spielend_wishlist=' + ids.join(',') + '; path=/; max-age=2592000';
       var item = rm.closest('.spielend-wishlist-item');
       if (item) item.remove();
     }

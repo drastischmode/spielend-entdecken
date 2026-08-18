@@ -848,3 +848,55 @@ add_filter('render_block', function($block_content, $block) {
     
     return '<div class="se-prod-card__image-wrapper">' . $badges_html . $block_content . $overlay . $wishlist_btn . '</div>';
 }, 20, 2);
+
+/** ============================================
+ * GUEST CHECKOUT & ACCOUNT OPTIONAL
+ * ============================================ */
+
+/** Guest Checkout erzwingen - immer aktiv */
+add_filter('woocommerce_enable_guest_checkout', '__return_true');
+
+/** Account-Erstellung beim Checkout ENTFERNEN (danach optional per E-Mail) */
+add_filter('woocommerce_enable_signup_and_login_from_checkout', '__return_false');
+
+/** "Konto erstellen" Checkbox im Checkout nicht vorausgewählt */
+add_filter('woocommerce_create_account_default_checked', '__return_false');
+
+/** Bewerbung: Konto-Erstellung erst nach Checkout anbieten */
+add_filter('woocommerce_checkout_registration_required', '__return_false');
+
+/** Versandkosten-Hinweis im Cart anzeigen */
+function se_cart_free_shipping_progress() {
+    if (!WC()->cart) return;
+    $subtotal = WC()->cart->subtotal;
+    $free_threshold = 50;
+    $remaining = max(0, $free_threshold - $subtotal);
+    
+    echo '<div class="se-free-shipping-progress">';
+    if ($remaining > 0) {
+        $pct = min(100, ($subtotal / $free_threshold) * 100);
+        echo '<p class="se-free-shipping-progress__text">'
+            . sprintf(esc_html__('Nur noch %s bis zum kostenlosen Versand!', 'woocommerce'), wc_price($remaining))
+            . '</p>';
+    } else {
+        echo '<p class="se-free-shipping-progress__text se-free-shipping-progress__text--done">'
+            . esc_html__('🎉 Gratis-Versand freigeschaltet!', 'woocommerce')
+            . '</p>';
+    }
+    echo '<div class="se-free-shipping-progress__bar"><div class="se-free-shipping-progress__fill" style="width:' . esc_attr($pct) . '%"></div></div>';
+    echo '</div>';
+}
+
+/** Free-Shipping-Progress im Mini-Cart anzeigen */
+function se_mini_cart_free_shipping_notice() {
+    echo '<div class="se-mini-cart-shipping">' . esc_html__('Kostenloser Versand ab 50 € Bestellwert', 'woocommerce') . '</div>';
+}
+
+/** Free-Shipping-Progress im Warenkorb (nach Produktliste) */
+add_action('woocommerce_before_cart', 'se_cart_free_shipping_progress', 5);
+
+/** Free-Shipping-Hinweis im Mini-Cart */
+add_action('woocommerce_before_mini_cart', 'se_mini_cart_free_shipping_notice', 5);
+
+/** Free-Shipping-Progress im Checkout-Review */
+add_action('woocommerce_review_order_before_cart_contents', 'se_cart_free_shipping_progress', 5);

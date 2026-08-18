@@ -37,6 +37,34 @@ $product_short_description = $product->get_short_description();
     if ($meta === 'yes') {
         $badges_html .= '<span class="se-prod-card__badge se-prod-card__badge--new">' . esc_html__('Neu', 'woocommerce') . '</span>';
     }
+
+    // Altersempfehlung Badge
+    $age_rating = get_post_meta($product->get_id(), '_se_age_rating', true);
+    if ($age_rating) {
+        $badges_html .= '<span class="se-prod-card__badge se-prod-card__badge--age" title="' . esc_attr__('Altersempfehlung', 'woocommerce') . '">';
+        $badges_html .= '<svg class="se-prod-card__badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+        $badges_html .= '<span>' . esc_html('Ab ' . $age_rating . ' Jahren') . '</span>';
+        $badges_html .= '</span>';
+    }
+
+    // Trust Badges: Sicherheit & Nachhaltigkeit
+    $sustainable = get_post_meta($product->get_id(), '_se_sustainable', true);
+    if ($sustainable === 'yes') {
+        $badges_html .= '<span class="se-prod-card__badge se-prod-card__badge--eco" title="' . esc_attr__('Nachhaltig', 'woocommerce') . '">';
+        $badges_html .= '<svg class="se-prod-card__badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4-4 8-9 8-14 0-2-1-4-3-4-3 0-5 3-5 6 0-3-2-6-5-6-2 0-3 2-3 4 0 5 4 10 8 14z"/></svg>';
+        $badges_html .= '<span>' . esc_html__('Nachhaltig', 'woocommerce') . '</span>';
+        $badges_html .= '</span>';
+    }
+
+    // Sicherheits-Zertifikat (falls Meta gesetzt)
+    $safety_cert = get_post_meta($product->get_id(), '_se_safety_cert', true);
+    if ($safety_cert) {
+        $badges_html .= '<span class="se-prod-card__badge se-prod-card__badge--safety" title="' . esc_attr__('Sicherheitsgeprüft', 'woocommerce') . '">';
+        $badges_html .= '<svg class="se-prod-card__badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 4 11 8 11z"></path><path d="M9 12l2 2 4-4"></path></svg>';
+        $badges_html .= '<span>' . esc_html($safety_cert) . '</span>';
+        $badges_html .= '</span>';
+    }
+
     if (!empty($badges_html)) {
         echo '<div class="se-prod-card__badges">' . $badges_html . '</div>';
     }
