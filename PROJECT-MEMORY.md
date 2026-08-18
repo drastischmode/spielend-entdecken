@@ -262,6 +262,13 @@ Kritische Fehler behoben (Commits `a4dbaee`, `e2accd0`, `6166ff7`):
   - ⚠️ `/tmp/opencode/*.sh` kann der System-Cleaner löschen → vor Ablauf neu prüfen
 - **Nach Reaktivierung offen** (DB-Inhalt, wp-admin): Impressum-E-Mail (lessenich.net → spielend-entdecken.de), Checkout-Permalink (/checkout-2/ → /kasse/)
 
+## AKTUELL: Sauber gezogen (18.08.2026)
+- **Repo in Sync**: local == origin/main (0/0) == Live-Server (FTP, identische Größen/Timestamps) — `git clean`
+- **QA-Fund → FIX v2.6.1 (`765a03e`)**: `theme.css` hatte an Zeile 1480 eine **NIEMALS GESCHLOSSENE `@media (max-width:768px)`-Klammer**. Folge: 2300+ Zeilen CSS (Produktkarten, Mobile-Bar, Skip-Link, Footer …) lagen fälschlich im Mobile-Query → Desktop-Styles unterdrückt. Fix: 1 fehlende schließende `}` nach dem MiniCart-Button-Block eingefügt. Einzeilige Klammer-Balance verifiziert (Final depth 0), im Browser (Desktop+Mobile, 6 Seiten) bestätigt, deployt auf Live.
+- **LICENSE-Datei ergänzt** (MIT) — README referenzierte sie, fehlte aber.
+- **Qualitätsprüfung durchgeführt**: 25 PHP-Dateien `php -l` ✅, 7 JS-Dateien `node --check` ✅, Secrets-Scan ✅ (nur Feld-Definitionen/Platzhalter wie `YOUR_TOKEN`), CSS-Klammern balanciert ✅
+- **Browser-Test (Live)**: Home/Shop/Kategorie × Desktop/Mobile = 6/6 ✅, HTTP 200, korrekte Produktzahlen (8/16/12)
+
 ## PRÄVENTION (gegen erneute CPU-Sperre)
 - Keine PageSpeed-API-Serien, keine Massen-Playwright-Audits auf InfinityFree
 - Domain-Check IMMER per Playwright (curl erkennt Suspension nicht — immer 200 WAF-Challenge)
