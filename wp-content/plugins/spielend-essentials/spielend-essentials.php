@@ -580,137 +580,21 @@ final class Spielend_Essentials {
 			if ( ! $product ) {
 				continue;
 			}
-
-			// Image
-			$img_html = $product->get_image( 'woocommerce_thumbnail', array( 'loading' => 'lazy', 'alt' => $product->get_name() ) );
-			if ( '' === $img_html ) {
-				$img_html = '<span class="se-prod-card__placeholder" aria-hidden="true"></span>';
-			} else {
-				// Wrap image in proper structure
-				$img_html = sprintf(
-					'<div class="se-prod-card__image"><a class="se-prod-card__image-link" href="%1$s">%2$s</a></div>',
-					esc_url( $product->get_permalink() ),
-					$img_html
-				);
+			$img = $product->get_image( 'woocommerce_thumbnail', array( 'loading' => 'lazy', 'alt' => $product->get_name() ) );
+			if ( '' === $img ) {
+				$img = '<span class="spielend-product-ph" aria-hidden="true"></span>';
 			}
-
-			// Badges
-			$badges_html = '';
-			if ( $product->is_on_sale() ) {
-				$badges_html .= '<span class="se-prod-card__badge se-prod-card__badge--sale">' . esc_html__( 'Sale', 'spielend-essentials' ) . '</span>';
-			}
-			if ( $product->is_featured() ) {
-				$badges_html .= '<span class="se-prod-card__badge se-prod-card__badge--featured">' . esc_html__( 'Empfohlen', 'spielend-essentials' ) . '</span>';
-			}
-			$meta = get_post_meta( $product->get_id(), '_spielend_product_new', true );
-			if ( $meta === 'yes' ) {
-				$badges_html .= '<span class="se-prod-card__badge se-prod-card__badge--new">' . esc_html__( 'Neu', 'spielend-essentials' ) . '</span>';
-			}
-			$badges_html = $badges_html ? '<div class="se-prod-card__badges">' . $badges_html . '</div>' : '';
-
-			// Wishlist button
-			$wishlist_btn = sprintf(
-				'<button type="button" class="se-prod-card__wishlist" data-id="%d" aria-label="%s" title="%s">
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06a5.5 5.5 0 0 0 7.78 7.78l1.06 1.06a5.5 5.5 0 0 0 7.78 7.78l1.06-1.06a5.5 5.5 0 0 0 7.78-7.78l-1.06-1.06a5.5 5.5 0 0 0-7.78 0z"></path></svg>
-				</button>',
-				$product->get_id(),
-				esc_attr__( 'Zur Wunschliste hinzufügen', 'spielend-essentials' ),
-				esc_attr__( 'Zur Wunschliste hinzufügen', 'spielend-essentials' )
-			);
-
-			// Quick view button
-			$quick_btn = sprintf(
-				'<button type="button" class="se-prod-card__quick" data-id="%d" aria-label="%s" title="%s">
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-				</button>',
-				$product->get_id(),
-				esc_attr__( 'Schnellansicht', 'spielend-essentials' ),
-				esc_attr__( 'Schnellansicht', 'spielend-essentials' )
-			);
-
-			// Price
-			$price_html = wp_kses_post( $product->get_price_html() );
-			// Split price HTML for current/old if on sale
-			if ( $product->is_on_sale() ) {
-				$price_html = preg_replace(
-					'/(<del[^>]*>.*?<\/del>)/i',
-					'<span class="se-prod-card__price-old">$1</span>',
-					$price_html
-				);
-				$price_html = preg_replace(
-					'/(<ins[^>]*>.*?<\/ins>)/i',
-					'<span class="se-prod-card__price-current">$1</span>',
-					$price_html
-				);
-			} else {
-				$price_html = '<span class="se-prod-card__price-current">' . $price_html . '</span>';
-			}
-			$price_html = '<div class="se-prod-card__price">' . $price_html . '</div>';
-
-			// Add to cart button
-			$atc_btn = sprintf(
-				'<button type="button" class="se-prod-card__add btn btn--primary btn--sm" data-id="%d" aria-label="%s">
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-					<span>%s</span>
-				</button>',
-				$product->get_id(),
-				esc_attr__( 'In den Warenkorb', 'spielend-essentials' ),
-				esc_html__( 'In den Warenkorb', 'spielend-essentials' )
-			);
-
-			// Title
-			$title_html = sprintf(
-				'<h3 class="se-prod-card__title">%s</h3>',
-				esc_html( $product->get_name() )
-			);
-
-			// Rating
-			$rating_html = $product->get_rating_html();
-			if ( $rating_html ) {
-				$rating_html = str_replace(
-					'class="star-rating"',
-					'class="se-prod-card__rating"',
-					$rating_html
-				);
-				$rating_html = sprintf(
-					'<div class="se-prod-card__rating-wrap">%s</div>',
-					$rating_html
-				);
-			} else {
-				$rating_html = '';
-			}
-
-			// Assemble card
 			$items .= sprintf(
-				'<a class="se-prod-card" href="%1$s" aria-label="%2$s">
-					%3$s
-					%4$s
-					%5$s
-					%6$s
-					%7$s
-					<div class="se-prod-card__content">
-						%8$s
-						%9$s
-						%10$s
-						%11$s
-						%12$s
-					</div>
-				</a>',
+				'<a class="se-prod-card" href="%1$s"><span class="se-prod-card__img">%2$s</span><span class="se-prod-card__title">%3$s</span><span class="se-prod-card__price">%4$s</span><span class="se-prod-card__btn wp-element-button">%5$s</span></a>',
 				esc_url( $product->get_permalink() ),
-				esc_attr( sprintf( __( 'Details zu %s anzeigen', 'spielend-essentials' ), $product->get_name() ) ),
-				$badges_html,
-				$img_html,
-				$wishlist_btn,
-				$quick_btn,
-				'<div class="se-prod-card__overlay"></div>',
-				$title_html,
-				$rating_html,
-				$price_html,
-				$atc_btn
+				$img,
+				esc_html( $product->get_name() ),
+				wp_kses_post( $product->get_price_html() ),
+				esc_html__( 'In den Warenkorb', 'spielend-essentials' )
 			);
 		}
 
-		return '<div class="se-products-grid">' . $items . '</div>';
+		return '<div class="se-featured-grid">' . $items . '</div>';
 	}
 
 	/**

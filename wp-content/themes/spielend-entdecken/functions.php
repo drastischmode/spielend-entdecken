@@ -170,13 +170,6 @@ function se_hero_shortcode() {
         $parts = array_map('trim', explode('|', $line));
         $badges[] = array('text' => $parts[0], 'url' => isset($parts[1]) ? $parts[1] : '');
     }
-    if (empty($badges)) {
-        $badges = array(
-            array('text' => 'Seit 1902', 'url' => ''),
-            array('text' => 'Gratis Versand ab 50 €', 'url' => '/versand'),
-            array('text' => 'Über 130 Produkte', 'url' => ''),
-        );
-    }
 
     // Hero eyebrow (optional)
     $eyebrow = spielend_opt('spielend_hero_eyebrow', 'Ihr Spielwarenladen am Niederrhein');
@@ -186,13 +179,25 @@ function se_hero_shortcode() {
         array('value' => '120+', 'label' => 'Jahre Erfahrung'),
         array('value' => '130+', 'label' => 'Produkte'),
         array('value' => '50€', 'label' => 'Gratis Versand ab'),
-        array('value' => '180m²', 'label' => 'Ladenfläche'),
+        array('value' => '180m²', 'label' => 'Ladenflä'),
     );
 
-    // Floating toys
-    $float_toys = array('🧸', '🧩', '🎨', '🎲');
+    // Floating toys (SVG instead of emoji for compatibility)
+    $float_toys = array(
+        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path><path d="M12 6v6l4 2"></path></svg>',
+        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path><path d="M8 12h8M12 8v8"></path></svg>',
+        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path><path d="M12 6v6M9 9h6M9 15h6"></path></svg>',
+        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path><path d="M12 6v6M9 9h6M9 15h6"></path></svg>',
+    );
+    if (empty($badges)) {
+        $badges = array(
+            array('text' => 'Seit 1902', 'url' => ''),
+            array('text' => 'Gratis Versand ab 50 €', 'url' => '/versand'),
+            array('text' => 'Über 130 Produkte', 'url' => ''),
+        );
+    }
 
-    ob_start();
+ob_start();
     ?>
 <div class="wp-block-cover alignfull se-hero" style="min-height:calc(100vh - 72px);">
     <span aria-hidden="true" class="wp-block-cover__background has-background-dim has-background-dim-60 has-background-gradient has-spielend-hero-gradient-background"></span>
